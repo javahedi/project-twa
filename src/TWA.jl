@@ -35,6 +35,17 @@ export AbstractSimulationResult, DTWAResult
 export simulate
 export times, ntrajectories, trajectory
 
+
+export AbstractObservable
+export LocalMagnetization, Magnetization
+export Correlation, ConnectedCorrelation
+export expectation
+export SpinSecondMoment, SpinVariance
+export CorrelationProfile
+export correlation_profile
+export StructureFactor
+export structure_factor
+
 include("models/geometry.jl")
 include("models/hamiltonians.jl")
 include("models/interactions.jl")
@@ -57,6 +68,10 @@ include("dynamics/dtwa_compiled.jl")
 include("simulation/results.jl")
 include("simulation/dtwa.jl")
 
+include("observables/observables.jl")
+include("observables/collective.jl")
+include("observables/correlation_profiles.jl")
+include("observables/structure_factors.jl")
 
 
 end
