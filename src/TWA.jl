@@ -16,11 +16,20 @@ export geometry, hamiltonian, terms
 export coupling_strength, coupling_components
 
 
+export AbstractState
+export Polarized, Up, Down, DomainWall
+export state_direction
+
+
+
 include("models/geometry.jl")
 include("models/hamiltonians.jl")
 include("models/interactions.jl")
 include("models/fields.jl")
 include("models/spin_model.jl")
 include("models/pair_couplings.jl")
+
+
+include("states/states.jl")
 
 end

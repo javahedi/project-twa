@@ -8,4 +8,6 @@ using TWA
     include("test_pair_couplings.jl")
     include("test_fields.jl")
     include("test_hamiltonians.jl")
+
+    include("test_states.jl")
 end
