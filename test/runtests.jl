@@ -15,4 +15,5 @@ using TWA
     include("test_dtwa_ensemble.jl")
     include("test_dtwa_dynamics.jl")
     include("test_dtwa_compiled.jl")
+    include("test_simulation.jl")
 end
