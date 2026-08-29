@@ -16,4 +16,8 @@ using TWA
     include("test_dtwa_dynamics.jl")
     include("test_dtwa_compiled.jl")
     include("test_simulation.jl")
+    include("test_observables.jl")
+    include("test_collective_observables.jl")
+    include("test_correlation_profiles.jl")
+    include("test_structure_factors.jl")
 end
