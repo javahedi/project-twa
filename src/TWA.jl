@@ -22,6 +22,9 @@ export state_direction
 
 export sample_dtwa
 
+export AbstractApproximation
+export DTWA
+
 
 
 include("models/geometry.jl")
@@ -33,6 +36,12 @@ include("models/pair_couplings.jl")
 
 
 include("states/states.jl")
+
+include("methods/methods.jl")
+include("methods/dtwa.jl")
+
 include("sampling/dtwa.jl")
+
+
 
 end
