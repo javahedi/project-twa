@@ -31,6 +31,9 @@ export dtwa_rhs!
 export CompiledDTWA
 export compile
 
+export AbstractSimulationResult, DTWAResult
+export simulate
+export times, ntrajectories, trajectory
 
 include("models/geometry.jl")
 include("models/hamiltonians.jl")
@@ -50,6 +53,9 @@ include("sampling/dtwa_ensemble.jl")
 
 include("dynamics/dtwa.jl")
 include("dynamics/dtwa_compiled.jl")
+
+include("simulation/results.jl")
+include("simulation/dtwa.jl")
 
 
 
