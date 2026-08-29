@@ -123,19 +123,24 @@ include("observables/correlation_profiles.jl")
 include("observables/structure_factors.jl")
 
 
-include("ctwa/pauli_basis.jl")
-include("ctwa/pauli_algebra.jl")
-include("ctwa/clustering.jl")
-include("ctwa/compiled_hamiltonian.jl")
-include("ctwa/compiled_algebra.jl")
-include("ctwa/sampling.jl")
-include("ctwa/method.jl")
-include("ctwa/dynamics.jl")
-include("ctwa/compiled.jl")
-include("ctwa/simulation.jl")
-include("ctwa/observables.jl")
-include("ctwa/collective_observables.jl")
-include("ctwa/spatial_observables.jl")
+include("algebra/pauli_basis.jl")
+include("algebra/pauli_algebra.jl")
+
+include("clustering/ctwa.jl")
+
+include("compilation/ctwa_hamiltonian.jl")
+include("compilation/ctwa_algebra.jl")
+
+include("sampling/ctwa.jl")
+include("methods/ctwa.jl")
+include("dynamics/ctwa.jl")
+
+include("compilation/ctwa.jl")
+include("simulation/ctwa.jl")
+
+include("observables/ctwa.jl")
+include("observables/ctwa_collective.jl")
+include("observables/ctwa_spatial.jl")
 
 
 end
