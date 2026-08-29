@@ -20,4 +20,17 @@ using TWA
     include("test_collective_observables.jl")
     include("test_correlation_profiles.jl")
     include("test_structure_factors.jl")
+
+    include("test_pauli_basis.jl")
+    include("test_pauli_algebra.jl")
+    include("test_clustering.jl")
+    include("test_ctwa_hamiltonian.jl")
+    include("test_ctwa_dynamics.jl")
+    include("test_ctwa_compiled_algebra.jl")
+    include("test_ctwa_sampling.jl")
+    include("test_ctwa_compiled.jl")
+    include("test_ctwa_simulation.jl")
+    include("test_ctwa_observables.jl")
+    include("test_ctwa_collective_observables.jl")
+    include("test_ctwa_spatial_observables.jl")
 end

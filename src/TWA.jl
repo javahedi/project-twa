@@ -1,5 +1,7 @@
 module TWA
 
+import Random
+
 export Chain
 export OpenBoundary, PeriodicBoundary
 export bonds, distance
@@ -46,6 +48,53 @@ export correlation_profile
 export StructureFactor
 export structure_factor
 
+
+
+export PauliStringBasis
+export basis_size
+export pauli_code, pauli_index, pauli_digits
+export pauli_symbol, pauli_symbols
+
+
+export pauli_product_digit
+export pauli_product
+export pauli_commutator
+export pauli_anticommutes
+
+
+export Clustering
+export cluster_count, cluster_sites
+export site_cluster, site_position, site_cluster_position
+export same_cluster
+export local_pauli_digits, local_pauli_index
+
+export CTWALocalTerm
+export CTWAInterClusterTerm
+export CompiledCTWAHamiltonian
+export compile_ctwa_hamiltonian
+export local_terms, intercluster_terms
+
+export ctwa_rhs!
+
+export CTWACommutatorEntry
+export CTWACommutatorAction
+export CompiledCTWAAlgebra
+export compile_ctwa_algebra
+export commutator_action
+
+
+export CTWASamplingPlan
+export compile_ctwa_sampling
+export sample_ctwa
+export sample_ctwa!
+
+export CTWA
+export CompiledCTWA
+export clustering
+export basis
+
+export CTWAResult
+
 include("models/geometry.jl")
 include("models/hamiltonians.jl")
 include("models/interactions.jl")
@@ -72,6 +121,21 @@ include("observables/observables.jl")
 include("observables/collective.jl")
 include("observables/correlation_profiles.jl")
 include("observables/structure_factors.jl")
+
+
+include("ctwa/pauli_basis.jl")
+include("ctwa/pauli_algebra.jl")
+include("ctwa/clustering.jl")
+include("ctwa/compiled_hamiltonian.jl")
+include("ctwa/compiled_algebra.jl")
+include("ctwa/sampling.jl")
+include("ctwa/method.jl")
+include("ctwa/dynamics.jl")
+include("ctwa/compiled.jl")
+include("ctwa/simulation.jl")
+include("ctwa/observables.jl")
+include("ctwa/collective_observables.jl")
+include("ctwa/spatial_observables.jl")
 
 
 end
