@@ -20,6 +20,8 @@ export AbstractState
 export Polarized, Up, Down, DomainWall
 export state_direction
 
+export sample_dtwa
+
 
 
 include("models/geometry.jl")
@@ -31,5 +33,6 @@ include("models/pair_couplings.jl")
 
 
 include("states/states.jl")
+include("sampling/dtwa.jl")
 
 end

@@ -10,4 +10,5 @@ using TWA
     include("test_hamiltonians.jl")
 
     include("test_states.jl")
+    include("test_dtwa_sampling.jl")
 end
