@@ -25,7 +25,7 @@ export sample_dtwa
 export AbstractApproximation
 export DTWA
 
-
+export sample_initial
 
 include("models/geometry.jl")
 include("models/hamiltonians.jl")
@@ -41,6 +41,7 @@ include("methods/methods.jl")
 include("methods/dtwa.jl")
 
 include("sampling/dtwa.jl")
+include("sampling/dtwa_ensemble.jl")
 
 
 

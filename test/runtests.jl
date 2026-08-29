@@ -12,4 +12,5 @@ using TWA
     include("test_states.jl")
     include("test_dtwa_sampling.jl")
     include("test_methods.jl")
+    include("test_dtwa_ensemble.jl")
 end
