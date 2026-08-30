@@ -36,7 +36,8 @@ end
 
 Return the saved simulation times.
 """
-times(result::DTWAResult) = result.t
+times(result::AbstractSimulationResult) =
+    result.t
 
 
 """

@@ -6,7 +6,7 @@ export Chain
 export OpenBoundary, PeriodicBoundary
 export bonds, distance
 
-export XXZ, NearestNeighbor, PowerLaw
+export XXZ, Ising, NearestNeighbor, PowerLaw
 
 export Field, field_components
 
