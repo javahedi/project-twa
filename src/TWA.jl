@@ -117,10 +117,6 @@ include("dynamics/dtwa_compiled.jl")
 include("simulation/results.jl")
 include("simulation/dtwa.jl")
 
-include("observables/observables.jl")
-include("observables/collective.jl")
-include("observables/correlation_profiles.jl")
-include("observables/structure_factors.jl")
 
 
 include("algebra/pauli_basis.jl")
@@ -138,9 +134,12 @@ include("dynamics/ctwa.jl")
 include("compilation/ctwa.jl")
 include("simulation/ctwa.jl")
 
-include("observables/ctwa.jl")
-include("observables/ctwa_collective.jl")
-include("observables/ctwa_spatial.jl")
+include("observables/observables.jl")
+include("observables/collective.jl")
+include("observables/correlation_profiles.jl")
+include("observables/structure_factors.jl")
+
+
 
 
 end

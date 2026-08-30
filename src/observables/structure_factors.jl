@@ -264,3 +264,148 @@ function _structure_factor_values!(
 
     return nothing
 end
+
+
+
+
+
+
+function structure_factor(
+    result::CTWAResult,
+    geometry::Chain,
+    axis::Symbol;
+    connected::Bool=false,
+    momenta=nothing,
+)
+    _ctwa_validate_geometry(
+        result,
+        geometry,
+    )
+
+    nsites =
+        geometry.nsites
+
+    qs =
+        momenta === nothing ?
+        _ctwa_default_momenta(
+            nsites,
+            eltype(result.trajectories),
+        ) :
+        collect(momenta)
+
+    ntimes =
+        length(
+            result.t,
+        )
+
+    T =
+        promote_type(
+            eltype(result.trajectories),
+            eltype(qs),
+        )
+
+    values =
+        zeros(
+            T,
+            ntimes,
+            length(qs),
+        )
+
+    # Diagonal i=j terms.
+    for site in 1:nsites
+        diagonal =
+            expectation(
+                result,
+                connected ?
+                    ConnectedCorrelation(
+                        axis,
+                        site,
+                        axis,
+                        site,
+                    ) :
+                    Correlation(
+                        axis,
+                        site,
+                        axis,
+                        site,
+                    ),
+            )
+
+        for q_index in eachindex(qs)
+            values[:, q_index] .+=
+                diagonal
+        end
+    end
+
+    # Off-diagonal terms.  Because same-axis correlations on different
+    # physical sites commute, the (i,j) and (j,i) terms combine into
+    # 2*cos(q*(j-i)).
+    for site_i in 1:(nsites - 1)
+        for site_j in (site_i + 1):nsites
+            correlation =
+                expectation(
+                    result,
+                    connected ?
+                        ConnectedCorrelation(
+                            axis,
+                            site_i,
+                            axis,
+                            site_j,
+                        ) :
+                        Correlation(
+                            axis,
+                            site_i,
+                            axis,
+                            site_j,
+                        ),
+                )
+
+            separation =
+                site_j -
+                site_i
+
+            for (q_index, q) in pairs(qs)
+                weight =
+                    T(2) *
+                    cos(
+                        T(q) *
+                        T(separation),
+                    )
+
+                values[:, q_index] .+=
+                    weight .*
+                    correlation
+            end
+        end
+    end
+
+    values ./=
+        T(nsites)
+
+    return StructureFactor(
+        qs,
+        values,
+        axis,
+        connected,
+    )
+end
+
+
+
+
+
+function _ctwa_default_momenta(
+    nsites::Int,
+    ::Type{T},
+) where {T<:Real}
+    two_pi =
+        T(2) *
+        T(pi)
+
+    return T[
+        two_pi *
+        T(m) /
+        T(nsites)
+        for m in 0:(nsites - 1)
+    ]
+end
