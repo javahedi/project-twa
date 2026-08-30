@@ -60,23 +60,12 @@ function simulate(
         )
 
     saved_times =
-        isnothing(saveat) ?
-        collect(
-            range(
-                T(t0),
-                T(tf);
-                length=101,
-            ),
-        ) :
-        collect(
-            T,
-            saveat,
-        )
-
-    isempty(saved_times) &&
-        throw(ArgumentError(
-            "saveat must contain at least one time",
-        ))
+    _simulation_saveat(
+        t0,
+        tf,
+        saveat,
+        T,
+    )
 
     compiled =
         compile(
@@ -171,7 +160,8 @@ function simulate(
     end
 
     return CTWAResult(
-        T.(
+        collect(
+            T,
             saved_times,
         ),
         trajectories,
