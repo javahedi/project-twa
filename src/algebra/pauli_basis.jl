@@ -1,3 +1,18 @@
+
+@inline function _checked_power_of_four(exponent::Int)
+    value = 1
+
+    for _ in 1:exponent
+        value = Base.Checked.checked_mul(
+            value,
+            4,
+        )
+    end
+
+    return value
+end
+
+
 """
     PauliStringBasis(cluster_size)
 
@@ -55,8 +70,7 @@ struct PauliStringBasis
 
         # checked multiplication avoids silently overflowing Int for an
         # impossible cluster size.
-        operator_space_dimension = Base.checked_pow(4, n)
-        dimension = operator_space_dimension - 1
+       dimension = _checked_power_of_four(n) - 1
 
         new(n, dimension)
     end
@@ -145,7 +159,7 @@ function pauli_digits(
     n = basis.cluster_size
 
     return ntuple(n) do site
-        power = Base.checked_pow(4, n - site)
+        power = 4 ^ (n - site)
         (value ÷ power) % 4
     end
 end
