@@ -75,3 +75,41 @@ struct PowerLaw{
         new{I,T}(interaction, α)
     end
 end
+
+
+
+
+
+"""
+    Ising(axis; J=1.0)
+
+Ising pair interaction along one Cartesian spin axis.
+
+The interaction contributes
+
+    H = J * σᵢᵃ σⱼᵃ
+
+for `axis = :x`, `:y`, or `:z`, with the interacting pairs determined
+separately by the coupling profile.
+
+# Examples
+
+    Ising(:x; J=1.0)
+    PowerLaw(Ising(:x; J=1.0); α=3.0)
+"""
+struct Ising{T<:Real} <: AbstractInteraction
+    axis::Symbol
+    J::T
+
+    function Ising(
+        axis::Symbol;
+        J::T=1.0,
+    ) where {T<:Real}
+        axis in (:x, :y, :z) ||
+            throw(ArgumentError(
+                "axis must be one of :x, :y, or :z; got :$axis",
+            ))
+
+        new{T}(axis, J)
+    end
+end

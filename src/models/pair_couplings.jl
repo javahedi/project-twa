@@ -209,6 +209,41 @@ end
 end
 
 
+
+
+@inline function _coupling_components(
+    geometry::Chain,
+    profile::NearestNeighbor{<:Ising},
+    i::Integer,
+    j::Integer,
+)
+    interaction = profile.interaction
+    T = typeof(interaction.J)
+
+    if i == j
+        z = zero(T)
+        return (z, z, z)
+    end
+
+    w = _coupling_strength(
+        geometry,
+        profile,
+        i,
+        j,
+    )
+
+    coupling = interaction.J * w
+    z = zero(coupling)
+
+    if interaction.axis === :x
+        return (coupling, z, z)
+    elseif interaction.axis === :y
+        return (z, coupling, z)
+    else
+        return (z, z, coupling)
+    end
+end
+
 # ---------------------------------------------------------------------------
 # Power-law XXZ
 # ---------------------------------------------------------------------------
@@ -260,4 +295,44 @@ end
     Jz = interaction.J * interaction.Δ * w
 
     return (Jxy, Jxy, Jz)
+end
+
+
+
+
+@inline function _coupling_components(
+    geometry::Chain,
+    profile::PowerLaw{<:Ising},
+    i::Integer,
+    j::Integer,
+)
+    interaction = profile.interaction
+
+    T = promote_type(
+        typeof(interaction.J),
+        typeof(profile.α),
+    )
+
+    if i == j
+        z = zero(T)
+        return (z, z, z)
+    end
+
+    w = _coupling_strength(
+        geometry,
+        profile,
+        i,
+        j,
+    )
+
+    coupling = interaction.J * w
+    z = zero(coupling)
+
+    if interaction.axis === :x
+        return (coupling, z, z)
+    elseif interaction.axis === :y
+        return (z, coupling, z)
+    else
+        return (z, z, coupling)
+    end
 end

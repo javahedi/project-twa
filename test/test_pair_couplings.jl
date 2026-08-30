@@ -129,3 +129,60 @@
         @test_throws BoundsError coupling_components(model, 1, 6)
     end
 end
+
+
+
+@testset "Ising interactions" begin
+    @testset "Nearest-neighbor axes" begin
+        mx = SpinModel(
+            Chain(4),
+            Ising(:x; J=2.0),
+        )
+
+        my = SpinModel(
+            Chain(4),
+            Ising(:y; J=2.0),
+        )
+
+        mz = SpinModel(
+            Chain(4),
+            Ising(:z; J=2.0),
+        )
+
+        @test coupling_components(mx, 1, 2) ==
+            (2.0, 0.0, 0.0)
+
+        @test coupling_components(my, 1, 2) ==
+            (0.0, 2.0, 0.0)
+
+        @test coupling_components(mz, 1, 2) ==
+            (0.0, 0.0, 2.0)
+
+        @test coupling_components(mx, 1, 3) ==
+            (0.0, 0.0, 0.0)
+    end
+
+    @testset "Power-law Ising" begin
+        model = SpinModel(
+            Chain(5),
+            PowerLaw(
+                Ising(:x; J=2.0);
+                α=2.0,
+            ),
+        )
+
+        components_13 = coupling_components(
+            model,
+            1,
+            3,
+        )
+
+        @test components_13[1] ≈ 0.5
+        @test components_13[2] == 0.0
+        @test components_13[3] == 0.0
+    end
+
+    @testset "Validation" begin
+        @test_throws ArgumentError Ising(:q; J=1.0)
+    end
+end
