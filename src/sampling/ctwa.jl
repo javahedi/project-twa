@@ -55,7 +55,7 @@ end
 
 
 """
-    compile_ctwa_sampling(state, clustering; T=Float64)
+    compile_ctwa_sampling(state, clustering; ::GaussianSampling;, T=Float64)
 
 Compile a matrix-free CTWA Gaussian sampler for a product state described by
 `state_direction`.
@@ -65,7 +65,8 @@ family currently represented by the package's state layer.
 """
 function compile_ctwa_sampling(
     state::AbstractState,
-    clustering::Clustering;
+    clustering::Clustering,
+    ::GaussianSampling;
     T::Type{<:AbstractFloat}=Float64,
 )
     basis =
@@ -483,4 +484,19 @@ Digits:
     throw(ArgumentError(
         "Pauli axis must be in 1:3; got $axis",
     ))
+end
+
+
+
+function compile_ctwa_sampling(
+    state::AbstractState,
+    clustering::Clustering;
+    T::Type{<:AbstractFloat}=Float64,
+)
+    return compile_ctwa_sampling(
+        state,
+        clustering,
+        GaussianSampling();
+        T=T,
+    )
 end

@@ -16,7 +16,7 @@ system environment.
 struct CompiledCTWA{
     H<:CompiledCTWAHamiltonian,
     A<:CompiledCTWAAlgebra,
-    S<:CTWASamplingPlan,
+    S,
 }
     hamiltonian::H
     algebra::A
@@ -60,7 +60,8 @@ function compile(
     sampling =
         compile_ctwa_sampling(
             state,
-            clustering;
+            clustering,
+            method.sampling;
             T=T,
         )
 
