@@ -220,8 +220,6 @@ Both site indices must lie in 1:chain.nsites.
     # 2
 ```
 """
-
-
 function distance(chain::Chain{OpenBoundary},
     i::Integer,
     j::Integer)
