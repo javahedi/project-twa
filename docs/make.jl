@@ -27,9 +27,9 @@ makedocs(
         "API Reference" => "api.md",
         "References & Citation" => "references.md",
     ],
+)
 
-    deploydocs(
+deploydocs(
     repo = "github.com/javahedi/project-twa.git",
     devbranch = "main",
-)
 )
