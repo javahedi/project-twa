@@ -1,5 +1,12 @@
+abstract type AbstractCTWASampling end
+
+struct GaussianSampling <: AbstractCTWASampling end
+struct DiscreteSampling <: AbstractCTWASampling end
+
+
 """
-    CTWA(; cluster_size=2, trajectories=1000)
+    CTWA(; cluster_size=2, trajectories=1000,
+           sampling=DiscreteSampling())
 
 Cluster truncated-Wigner approximation configuration.
 
@@ -9,16 +16,17 @@ phase-space coordinates.
 
 `trajectories` is the number of independently sampled classical trajectories.
 
-Solver choices, RNGs, precision, and environments are intentionally not stored
-in this type.
+`sampling` selects the initial cluster phase-space sampling prescription.
 """
-struct CTWA <: AbstractApproximation
+struct CTWA{S<:AbstractCTWASampling} <: AbstractApproximation
     cluster_size::Int
     trajectories::Int
+    sampling::S
 
     function CTWA(;
         cluster_size::Integer=2,
         trajectories::Integer=1000,
+        sampling::AbstractCTWASampling=DiscreteSampling(),
     )
         cluster_size > 0 ||
             throw(ArgumentError(
@@ -30,9 +38,10 @@ struct CTWA <: AbstractApproximation
                 "trajectories must be positive",
             ))
 
-        new(
+        new{typeof(sampling)}(
             Int(cluster_size),
             Int(trajectories),
+            sampling,
         )
     end
 end

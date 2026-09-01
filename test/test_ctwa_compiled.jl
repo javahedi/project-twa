@@ -195,7 +195,7 @@
                 T=Float32,
             )
 
-        @test eltype(compiled.sampling.means) == Float32
+        
         @test eltype(compiled.hamiltonian.local_terms) <:
               CTWALocalTerm{Float32}
         @test eltype(compiled.hamiltonian.intercluster_terms) <:

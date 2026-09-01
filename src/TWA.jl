@@ -88,7 +88,10 @@ export compile_ctwa_sampling
 export sample_ctwa
 export sample_ctwa!
 
+export AbstractCTWASampling
+export GaussianSampling, DiscreteSampling
 export CTWA
+
 export CompiledCTWA
 export clustering
 export basis
@@ -111,6 +114,7 @@ include("methods/dtwa.jl")
 include("sampling/dtwa.jl")
 include("sampling/dtwa_ensemble.jl")
 
+
 include("dynamics/dtwa.jl")
 include("dynamics/dtwa_compiled.jl")
 
@@ -127,8 +131,9 @@ include("clustering/ctwa.jl")
 include("compilation/ctwa_hamiltonian.jl")
 include("compilation/ctwa_algebra.jl")
 
-include("sampling/ctwa.jl")
 include("methods/ctwa.jl")
+include("sampling/ctwa.jl")
+include("sampling/ctwa_discrete.jl")
 include("dynamics/ctwa.jl")
 
 include("compilation/ctwa.jl")

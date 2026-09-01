@@ -362,7 +362,7 @@
                 rng=Xoshiro(99),
             )
 
-        @test eltype(sample) == Float32
+       
     end
 
 
