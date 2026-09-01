@@ -227,29 +227,10 @@ Pkg.develop(
 
 ## Documentation
 
-The documentation contains
+The full documentation is available online:
 
-- a Quick Start,
-- model and initial-state guides,
-- DTWA and CTWA introductions,
-- observable definitions,
-- a long-range Ising example,
-- an API reference, and
-- methodological references and citation information.
+**[TWA.jl Documentation](https://javahedi.github.io/project-twa/dev/)**
 
-To build the documentation locally:
-
-```bash
-julia --project=docs docs/make.jl
-```
-
-Then open
-
-```text
-docs/build/index.html
-```
-
-in a browser.
 
 ## References
 
