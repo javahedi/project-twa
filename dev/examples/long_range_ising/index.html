@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Long-range Ising · TWA.jl</title><meta name="title" content="Long-range Ising · TWA.jl"/><meta property="og:title" content="Long-range Ising · TWA.jl"/><meta property="twitter:title" content="Long-range Ising · TWA.jl"/><meta name="description" content="Documentation for TWA.jl."/><meta property="og:description" content="Documentation for TWA.jl."/><meta property="twitter:description" content="Documentation for TWA.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TWA.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../quickstart/">Quick Start</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../../manual/models/">Models</a></li><li><a class="tocitem" href="../../manual/states/">Initial States</a></li><li><a class="tocitem" href="../../manual/dtwa/">DTWA</a></li><li><a class="tocitem" href="../../manual/ctwa/">CTWA</a></li><li><a class="tocitem" href="../../manual/observables/">Observables</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li class="is-active"><a class="tocitem" href>Long-range Ising</a><ul class="internal"><li><a class="tocitem" href="#Model"><span>Model</span></a></li><li><a class="tocitem" href="#Initial-state"><span>Initial state</span></a></li><li><a class="tocitem" href="#Exact-solution"><span>Exact solution</span></a></li><li><a class="tocitem" href="#Four-phase-space-approximations"><span>Four phase-space approximations</span></a></li><li><a class="tocitem" href="#Running-the-simulations"><span>Running the simulations</span></a></li><li><a class="tocitem" href="#Results"><span>Results</span></a></li><li><a class="tocitem" href="#Reproducibility"><span>Reproducibility</span></a></li><li><a class="tocitem" href="#What-should-be-converged?"><span>What should be converged?</span></a></li><li><a class="tocitem" href="#Complete-example"><span>Complete example</span></a></li><li><a class="tocitem" href="#Related-methods"><span>Related methods</span></a></li></ul></li></ul></li><li><a class="tocitem" href="../../api/">API Reference</a></li><li><a class="tocitem" href="../../references/">References &amp; Citation</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Long-range Ising</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Long-range Ising</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa/blob/main/docs/src/examples/long_range_ising.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Long-range-Ising-Benchmark"><a class="docs-heading-anchor" href="#Long-range-Ising-Benchmark">Long-range Ising Benchmark</a><a id="Long-range-Ising-Benchmark-1"></a><a class="docs-heading-anchor-permalink" href="#Long-range-Ising-Benchmark" title="Permalink"></a></h1><p>This example compares four truncated-Wigner descriptions of a long-range Ising chain against an analytical result:</p><ul><li>traditional Gaussian TWA,</li><li>discrete TWA (DTWA),</li><li>Gaussian cluster TWA (gcTWA),</li><li>discrete cluster TWA (dcTWA).</li></ul><p>The example illustrates an important feature of the <code>TWA.jl</code> API: <strong>cluster size and phase-space sampling can be varied independently while the physical model and initial state remain unchanged.</strong></p><h2 id="Model"><a class="docs-heading-anchor" href="#Model">Model</a><a id="Model-1"></a><a class="docs-heading-anchor-permalink" href="#Model" title="Permalink"></a></h2><p>Consider a one-dimensional chain of <span>$N$</span> spin-<span>$1/2$</span> degrees of freedom with the Hamiltonian</p><p class="math-container">\[H =
+\sum_{i&lt;j}
+J_{ij}\,
+\sigma_i^x\sigma_j^x,\]</p><p>where the interactions decay as</p><p class="math-container">\[J_{ij}
+=
+\frac{J}{r_{ij}^{\alpha}}.\]</p><p>Here <span>$r_{ij}$</span> is the distance between sites <span>$i$</span> and <span>$j$</span>.</p><p>In <code>TWA.jl</code>, the model is constructed as</p><pre><code class="language-julia hljs">using TWA
+
+const L = 100
+const J = 1.0
+
+model = SpinModel(
+    Chain(L),
+    PowerLaw(
+        Ising(:x; J=J);
+        α=3.0,
+    ),
+)</code></pre><p>We consider two interaction exponents:</p><p class="math-container">\[\alpha=0\]</p><p>for distance-independent all-to-all interactions, and</p><p class="math-container">\[\alpha=3\]</p><p>for a dipolar power-law decay in one dimension.</p><h2 id="Initial-state"><a class="docs-heading-anchor" href="#Initial-state">Initial state</a><a id="Initial-state-1"></a><a class="docs-heading-anchor-permalink" href="#Initial-state" title="Permalink"></a></h2><p>All spins are initially polarized along <span>$+z$</span>:</p><p class="math-container">\[|\psi_0\rangle
+=
+|\uparrow_z\rangle^{\otimes N}.\]</p><p>In the package this is simply</p><pre><code class="language-julia hljs">state = Up()</code></pre><p>The observable of interest is the longitudinal magnetization density,</p><p class="math-container">\[m_z(t)
+=
+\frac{1}{N}
+\sum_i
+\langle\sigma_i^z(t)\rangle
+=
+\frac{\langle S^z(t)\rangle}{N}.\]</p><h2 id="Exact-solution"><a class="docs-heading-anchor" href="#Exact-solution">Exact solution</a><a id="Exact-solution-1"></a><a class="docs-heading-anchor-permalink" href="#Exact-solution" title="Permalink"></a></h2><p>This model provides a useful benchmark because all terms in the Hamiltonian commute:</p><p class="math-container">\[[
+\sigma_i^x\sigma_j^x,
+\sigma_k^x\sigma_l^x
+]
+=
+0.\]</p><p>For the fully <span>$z$</span>-polarized initial state, the local magnetization is</p><p class="math-container">\[\langle\sigma_i^z(t)\rangle
+=
+\prod_{j\neq i}
+\cos\left(2J_{ij}t\right).\]</p><p>The exact magnetization density is therefore</p><p class="math-container">\[m_z(t)
+=
+\frac{1}{N}
+\sum_i
+\prod_{j\neq i}
+\cos\left(2J_{ij}t\right).\]</p><p>This expression lets us compare the different phase-space approximations directly against the exact dynamics without performing exact many-body time evolution.</p><p>A simple implementation is</p><pre><code class="language-julia hljs">function exact_magnetization_z(model::SpinModel, ts)
+    nsites = geometry(model).nsites
+    values = zeros(Float64, length(ts))
+
+    for (time_index, t) in pairs(ts)
+        total = 0.0
+
+        for i in 1:nsites
+            local_magnetization = 1.0
+
+            for j in 1:nsites
+                i == j &amp;&amp; continue
+
+                Jx, _, _ = coupling_components(
+                    model,
+                    i,
+                    j,
+                )
+
+                local_magnetization *=
+                    cos(2 * Jx * t)
+            end
+
+            total += local_magnetization
+        end
+
+        values[time_index] = total / nsites
+    end
+
+    return values
+end</code></pre><div class="admonition is-info" id="Note-58d3817e4e60c804"><header class="admonition-header">Note<a class="admonition-anchor" href="#Note-58d3817e4e60c804" title="Permalink"></a></header><div class="admonition-body"><p>The analytical solution can be evaluated on a much finer time grid than the numerical simulations. This improves the appearance of the exact curve without increasing the number of saved ODE time points.</p></div></div><p>For example,</p><pre><code class="language-julia hljs">simulation_times =
+    collect(0.0:0.05:4.0)
+
+exact_times =
+    collect(0.0:0.01:4.0)</code></pre><p>can be used independently.</p><h2 id="Four-phase-space-approximations"><a class="docs-heading-anchor" href="#Four-phase-space-approximations">Four phase-space approximations</a><a id="Four-phase-space-approximations-1"></a><a class="docs-heading-anchor-permalink" href="#Four-phase-space-approximations" title="Permalink"></a></h2><p>The benchmark separates two approximation choices:</p><ol><li>whether the phase space describes individual spins or clusters;</li><li>whether the initial state is sampled using a Gaussian or discrete representation.</li></ol><p>This gives the following comparison:</p><table><tr><th style="text-align: right">Sampling</th><th style="text-align: right">Single-spin</th><th style="text-align: right">Two-spin cluster</th></tr><tr><td style="text-align: right">Gaussian</td><td style="text-align: right">TWA</td><td style="text-align: right">gcTWA</td></tr><tr><td style="text-align: right">Discrete</td><td style="text-align: right">DTWA</td><td style="text-align: right">dcTWA</td></tr></table><h3 id="Traditional-TWA"><a class="docs-heading-anchor" href="#Traditional-TWA">Traditional TWA</a><a id="Traditional-TWA-1"></a><a class="docs-heading-anchor-permalink" href="#Traditional-TWA" title="Permalink"></a></h3><p>For a single-spin phase space with Gaussian initial sampling, we use</p><pre><code class="language-julia hljs">twa = CTWA(
+    cluster_size=1,
+    trajectories=1000,
+    sampling=GaussianSampling(),
+)</code></pre><p>At cluster size one, CTWA contains only the three single-spin coordinates <span>$X$</span>, <span>$Y$</span>, and <span>$Z$</span>. Its equations therefore reduce to the ordinary classical-spin equations.</p><h3 id="DTWA"><a class="docs-heading-anchor" href="#DTWA">DTWA</a><a id="DTWA-1"></a><a class="docs-heading-anchor-permalink" href="#DTWA" title="Permalink"></a></h3><p>Discrete single-spin sampling is selected directly with</p><pre><code class="language-julia hljs">dtwa = DTWA(
+    trajectories=1000,
+)</code></pre><p>The classical dynamics are closely related to the single-spin Gaussian case, but the initial quantum fluctuations are represented using the discrete spin phase space.</p><h3 id="Gaussian-CTWA"><a class="docs-heading-anchor" href="#Gaussian-CTWA">Gaussian CTWA</a><a id="Gaussian-CTWA-1"></a><a class="docs-heading-anchor-permalink" href="#Gaussian-CTWA" title="Permalink"></a></h3><p>To introduce two-spin clusters while retaining Gaussian initial sampling, use</p><pre><code class="language-julia hljs">gctwa = CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=GaussianSampling(),
+)</code></pre><p>A two-spin cluster has</p><p class="math-container">\[4^2-1=15\]</p><p>nontrivial Pauli-string phase-space coordinates.</p><h3 id="Discrete-CTWA"><a class="docs-heading-anchor" href="#Discrete-CTWA">Discrete CTWA</a><a id="Discrete-CTWA-1"></a><a class="docs-heading-anchor-permalink" href="#Discrete-CTWA" title="Permalink"></a></h3><p>The corresponding discrete cluster calculation is</p><pre><code class="language-julia hljs">dctwa = CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=DiscreteSampling(),
+)</code></pre><p>The cluster dynamics are the same as in gcTWA. Only the representation of the initial quantum state has changed.</p><h2 id="Running-the-simulations"><a class="docs-heading-anchor" href="#Running-the-simulations">Running the simulations</a><a id="Running-the-simulations-1"></a><a class="docs-heading-anchor-permalink" href="#Running-the-simulations" title="Permalink"></a></h2><p>A typical simulation uses</p><pre><code class="language-julia hljs">const TMAX = 4.0
+const DT = 0.05
+const NTRAJ = 1000
+
+const OUTPUT_TIMES =
+    collect(0.0:DT:TMAX)</code></pre><p>For example, DTWA is run as</p><pre><code class="language-julia hljs">dtwa_result = simulate(
+    model,
+    state,
+    DTWA(
+        trajectories=NTRAJ,
+    );
+    tspan=(0.0, TMAX),
+    saveat=OUTPUT_TIMES,
+)</code></pre><p>and the magnetization is extracted with</p><pre><code class="language-julia hljs">dtwa_mz = expectation(
+    dtwa_result,
+    Magnetization(:z),
+)</code></pre><p>The dcTWA calculation changes only the approximation:</p><pre><code class="language-julia hljs">dctwa_result = simulate(
+    model,
+    state,
+    CTWA(
+        cluster_size=2,
+        trajectories=NTRAJ,
+        sampling=DiscreteSampling(),
+    );
+    tspan=(0.0, TMAX),
+    saveat=OUTPUT_TIMES,
+)</code></pre><p>followed by the same observable call:</p><pre><code class="language-julia hljs">dctwa_mz = expectation(
+    dctwa_result,
+    Magnetization(:z),
+)</code></pre><p>This is one of the main advantages of separating models, states, methods, and observables in the package API.</p><h2 id="Results"><a class="docs-heading-anchor" href="#Results">Results</a><a id="Results-1"></a><a class="docs-heading-anchor-permalink" href="#Results" title="Permalink"></a></h2><p>The figure below compares the four phase-space approximations with the analytical result for <span>$N=100$</span>.</p><p>The left panel shows the all-to-all case <span>$\alpha=0$</span>, while the right panel shows the power-law case <span>$\alpha=3$</span>.</p><p><img src="../../assets/ising_twa_dtwa_dctwa_comparison.png" alt="Exact, TWA, DTWA, gcTWA, and dcTWA dynamics for the long-range Ising model"/></p><p>The comparison should be read in two complementary ways.</p><p>At fixed single-spin phase space,</p><pre><code class="language-text hljs">TWA  ↔  DTWA</code></pre><p>compares Gaussian and discrete sampling.</p><p>At fixed two-spin cluster size,</p><pre><code class="language-text hljs">gcTWA  ↔  dcTWA</code></pre><p>compares the same two sampling strategies in cluster phase space.</p><p>Conversely,</p><pre><code class="language-text hljs">TWA    ↔  gcTWA
+DTWA   ↔  dcTWA</code></pre><p>compare single-spin and cluster descriptions while keeping the sampling family fixed.</p><p>This makes the benchmark useful for separating the effect of the initial phase-space representation from the effect of clustering.</p><h2 id="Reproducibility"><a class="docs-heading-anchor" href="#Reproducibility">Reproducibility</a><a id="Reproducibility-1"></a><a class="docs-heading-anchor-permalink" href="#Reproducibility" title="Permalink"></a></h2><p>Because TWA, DTWA, gcTWA, and dcTWA are Monte Carlo methods, finite trajectory ensembles produce statistical fluctuations.</p><p>For reproducible comparisons, an explicit random-number generator can be supplied:</p><pre><code class="language-julia hljs">using Random
+
+result = simulate(
+    model,
+    state,
+    DTWA(
+        trajectories=1000,
+    );
+    tspan=(0.0, 4.0),
+    saveat=0.05,
+    rng=Xoshiro(1234),
+)</code></pre><p>Using a fixed seed is useful for examples, tests, and benchmarks.</p><p>For scientific calculations, convergence should still be checked by increasing the number of trajectories.</p><h2 id="What-should-be-converged?"><a class="docs-heading-anchor" href="#What-should-be-converged?">What should be converged?</a><a id="What-should-be-converged?-1"></a><a class="docs-heading-anchor-permalink" href="#What-should-be-converged?" title="Permalink"></a></h2><p>There are two distinct convergence questions.</p><p>For every stochastic TWA calculation, increase the number of trajectories:</p><pre><code class="language-text hljs">100 → 1000 → 10000</code></pre><p>to assess Monte Carlo sampling noise.</p><p>For CTWA, the cluster size provides an additional approximation parameter:</p><pre><code class="language-text hljs">k = 1 → 2 → 4 → ...</code></pre><p>when compatible with the system size and computational resources.</p><p>The number of CTWA phase-space coordinates per cluster grows as</p><p class="math-container">\[4^k-1,\]</p><p>so increasing the cluster size rapidly becomes more expensive.</p><p>Trajectory convergence and cluster-size convergence should therefore be examined separately.</p><h2 id="Complete-example"><a class="docs-heading-anchor" href="#Complete-example">Complete example</a><a id="Complete-example-1"></a><a class="docs-heading-anchor-permalink" href="#Complete-example" title="Permalink"></a></h2><p>The complete script used to generate the figure is available in the repository as</p><pre><code class="language-text hljs">examples/ising_twa_dtwa_dctwa_comparison.jl</code></pre><p>It can be run from the package root with</p><pre><code class="language-bash hljs">julia --project=docs \
+    examples/ising_twa_dtwa_dctwa_comparison.jl</code></pre><p>The generated figure is written to</p><pre><code class="language-text hljs">docs/src/assets/ising_twa_dtwa_dctwa_comparison.png</code></pre><h2 id="Related-methods"><a class="docs-heading-anchor" href="#Related-methods">Related methods</a><a id="Related-methods-1"></a><a class="docs-heading-anchor-permalink" href="#Related-methods" title="Permalink"></a></h2><p>For details of the underlying approximations, see</p><ul><li><a href="../../manual/dtwa/">Discrete Truncated-Wigner Approximation</a></li><li><a href="../../manual/ctwa/">Cluster Truncated-Wigner Approximation</a></li><li><a href="../../manual/observables/">Observables</a></li></ul><p>The methodological literature is collected in <a href="../../references/">References and Citation</a>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../manual/observables/">« Observables</a><a class="docs-footer-nextpage" href="../../api/">API Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Tuesday 1 September 2026 21:05">Tuesday 1 September 2026</span>. Using Julia version 1.12.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

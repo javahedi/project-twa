@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Models · TWA.jl</title><meta name="title" content="Models · TWA.jl"/><meta property="og:title" content="Models · TWA.jl"/><meta property="twitter:title" content="Models · TWA.jl"/><meta name="description" content="Documentation for TWA.jl."/><meta property="og:description" content="Documentation for TWA.jl."/><meta property="twitter:description" content="Documentation for TWA.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TWA.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../quickstart/">Quick Start</a></li><li><span class="tocitem">Manual</span><ul><li class="is-active"><a class="tocitem" href>Models</a><ul class="internal"><li><a class="tocitem" href="#Hamiltonian-convention"><span>Hamiltonian convention</span></a></li><li><a class="tocitem" href="#Geometry"><span>Geometry</span></a></li><li><a class="tocitem" href="#XXZ-interactions"><span>XXZ interactions</span></a></li><li><a class="tocitem" href="#Ising-interactions"><span>Ising interactions</span></a></li><li><a class="tocitem" href="#Power-law-interactions"><span>Power-law interactions</span></a></li><li><a class="tocitem" href="#Local-fields"><span>Local fields</span></a></li><li><a class="tocitem" href="#Building-a-spin-model"><span>Building a spin model</span></a></li><li><a class="tocitem" href="#Model,-state,-and-method-are-independent"><span>Model, state, and method are independent</span></a></li><li><a class="tocitem" href="#Next-steps"><span>Next steps</span></a></li></ul></li><li><a class="tocitem" href="../states/">Initial States</a></li><li><a class="tocitem" href="../dtwa/">DTWA</a></li><li><a class="tocitem" href="../ctwa/">CTWA</a></li><li><a class="tocitem" href="../observables/">Observables</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../../examples/long_range_ising/">Long-range Ising</a></li></ul></li><li><a class="tocitem" href="../../api/">API Reference</a></li><li><a class="tocitem" href="../../references/">References &amp; Citation</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>Models</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Models</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa/blob/main/docs/src/manual/models.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Models"><a class="docs-heading-anchor" href="#Models">Models</a><a id="Models-1"></a><a class="docs-heading-anchor-permalink" href="#Models" title="Permalink"></a></h1><p>A physical spin model in <code>TWA.jl</code> is represented by a <code>SpinModel</code>.</p><p>The model describes the Hamiltonian and the geometry of the spin system. It is independent of the initial state and of the approximation method used to simulate the dynamics.</p><p>A typical model is constructed as</p><pre><code class="language-julia hljs">using TWA
+
+model = SpinModel(
+    Chain(50),
+    XXZ(
+        J=1.0,
+        Δ=0.5,
+    ),
+)</code></pre><p>The same <code>model</code> can subsequently be simulated using DTWA, Gaussian CTWA, or discrete CTWA.</p><h2 id="Hamiltonian-convention"><a class="docs-heading-anchor" href="#Hamiltonian-convention">Hamiltonian convention</a><a id="Hamiltonian-convention-1"></a><a class="docs-heading-anchor-permalink" href="#Hamiltonian-convention" title="Permalink"></a></h2><p><code>TWA.jl</code> uses Pauli matrices as the fundamental spin variables.</p><p>For pair interactions and local fields, the Hamiltonian convention is</p><p class="math-container">\[H =
+\sum_{i&lt;j}
+\left(
+J_{ij}^{x}\sigma_i^x\sigma_j^x
++
+J_{ij}^{y}\sigma_i^y\sigma_j^y
++
+J_{ij}^{z}\sigma_i^z\sigma_j^z
+\right)
++
+\sum_i
+\left(
+h_i^x\sigma_i^x
++
+h_i^y\sigma_i^y
++
+h_i^z\sigma_i^z
+\right).\]</p><p>Here <span>$\sigma_i^\alpha$</span> denotes a Pauli matrix acting on site <span>$i$</span>.</p><div class="admonition is-info" id="Pauli-matrix-convention-5aabac1ae74050aa"><header class="admonition-header">Pauli-matrix convention<a class="admonition-anchor" href="#Pauli-matrix-convention-5aabac1ae74050aa" title="Permalink"></a></header><div class="admonition-body"><p>The package uses <span>$\sigma^\alpha$</span> rather than <span>$S^\alpha=\sigma^\alpha/2$</span> as the microscopic spin variables. This convention determines the numerical values of coupling constants, fields, equations of motion, and observables.</p></div></div><h2 id="Geometry"><a class="docs-heading-anchor" href="#Geometry">Geometry</a><a id="Geometry-1"></a><a class="docs-heading-anchor-permalink" href="#Geometry" title="Permalink"></a></h2><p>The geometry specifies the physical sites and their spatial relationships.</p><h3 id="One-dimensional-chains"><a class="docs-heading-anchor" href="#One-dimensional-chains">One-dimensional chains</a><a id="One-dimensional-chains-1"></a><a class="docs-heading-anchor-permalink" href="#One-dimensional-chains" title="Permalink"></a></h3><p>A chain of <code>L</code> spins is constructed with</p><pre><code class="language-julia hljs">geometry = Chain(L)</code></pre><p>For example,</p><pre><code class="language-julia hljs">geometry = Chain(100)</code></pre><p>creates a one-dimensional chain containing 100 spins.</p><p>The geometry is passed as the first argument of <code>SpinModel</code>:</p><pre><code class="language-julia hljs">model = SpinModel(
+    Chain(100),
+    Ising(:x; J=1.0),
+)</code></pre><p>The geometry is responsible for defining site relationships used by spatially dependent interactions.</p><h2 id="XXZ-interactions"><a class="docs-heading-anchor" href="#XXZ-interactions">XXZ interactions</a><a id="XXZ-interactions-1"></a><a class="docs-heading-anchor-permalink" href="#XXZ-interactions" title="Permalink"></a></h2><p>The XXZ interaction can be constructed with</p><pre><code class="language-julia hljs">XXZ(
+    J=1.0,
+    Δ=0.5,
+)</code></pre><p>It corresponds to the spin interaction</p><p class="math-container">\[H_{\mathrm{XXZ}}
+=
+J
+\sum_{i&lt;j}
+\left(
+\sigma_i^x\sigma_j^x
++
+\sigma_i^y\sigma_j^y
++
+\Delta\,\sigma_i^z\sigma_j^z
+\right),\]</p><p>with the set of interacting pairs determined by the spatial interaction used in the model.</p><p>For example,</p><pre><code class="language-julia hljs">model = SpinModel(
+    Chain(50),
+    XXZ(
+        J=1.0,
+        Δ=0.5,
+    ),
+)</code></pre><p>constructs the corresponding short-range chain model.</p><p>The isotropic point is obtained with</p><pre><code class="language-julia hljs">XXZ(
+    J=1.0,
+    Δ=1.0,
+)</code></pre><p>while other values of <code>Δ</code> introduce exchange anisotropy.</p><h2 id="Ising-interactions"><a class="docs-heading-anchor" href="#Ising-interactions">Ising interactions</a><a id="Ising-interactions-1"></a><a class="docs-heading-anchor-permalink" href="#Ising-interactions" title="Permalink"></a></h2><p>An Ising interaction is specified by its spin axis and coupling strength.</p><p>For example,</p><pre><code class="language-julia hljs">Ising(
+    :x;
+    J=1.0,
+)</code></pre><p>describes an interaction proportional to</p><p class="math-container">\[\sigma_i^x\sigma_j^x.\]</p><p>The interaction axis can be selected using <code>:x</code>, <code>:y</code>, or <code>:z</code>:</p><pre><code class="language-julia hljs">Ising(:x; J=1.0)
+Ising(:y; J=1.0)
+Ising(:z; J=1.0)</code></pre><p>For an <span>$x$</span>-Ising model,</p><p class="math-container">\[H_{\mathrm{Ising}}
+=
+\sum_{i&lt;j}
+J_{ij}
+\sigma_i^x\sigma_j^x.\]</p><h2 id="Power-law-interactions"><a class="docs-heading-anchor" href="#Power-law-interactions">Power-law interactions</a><a id="Power-law-interactions-1"></a><a class="docs-heading-anchor-permalink" href="#Power-law-interactions" title="Permalink"></a></h2><p>Spatially long-range interactions can be introduced with <code>PowerLaw</code>.</p><p>For example,</p><pre><code class="language-julia hljs">model = SpinModel(
+    Chain(100),
+    PowerLaw(
+        Ising(:x; J=1.0);
+        α=3.0,
+    ),
+)</code></pre><p>produces couplings that decay with distance as</p><p class="math-container">\[J_{ij}
+=
+\frac{J}{r_{ij}^{\alpha}},\]</p><p>where <span>$r_{ij}$</span> is the distance between sites <span>$i$</span> and <span>$j$</span>.</p><p>The exponent <code>α</code> controls the interaction range.</p><p>For example,</p><pre><code class="language-julia hljs">α = 0.0</code></pre><p>gives distance-independent all-to-all couplings, while</p><pre><code class="language-julia hljs">α = 3.0</code></pre><p>gives a dipolar power-law decay in one dimension.</p><p>The same spatial wrapper can be applied to other supported pair interactions. For example,</p><pre><code class="language-julia hljs">model = SpinModel(
+    Chain(50),
+    PowerLaw(
+        XXZ(
+            J=1.0,
+            Δ=0.5,
+        );
+        α=3.0,
+    ),
+)</code></pre><p>defines a long-range XXZ chain.</p><h2 id="Local-fields"><a class="docs-heading-anchor" href="#Local-fields">Local fields</a><a id="Local-fields-1"></a><a class="docs-heading-anchor-permalink" href="#Local-fields" title="Permalink"></a></h2><p>Local single-spin terms are represented with <code>Field</code>.</p><p>They contribute terms of the form</p><p class="math-container">\[H_{\mathrm{field}}
+=
+\sum_i
+\mathbf{h}_i\cdot\boldsymbol{\sigma}_i.\]</p><p>For example, a field along the <span>$z$</span> direction can be specified with</p><pre><code class="language-julia hljs">Field(:z, 0.5)</code></pre><p>and similarly for the other Cartesian directions.</p><p>Fields and pair interactions can be combined to construct more general Hamiltonians.</p><h2 id="Building-a-spin-model"><a class="docs-heading-anchor" href="#Building-a-spin-model">Building a spin model</a><a id="Building-a-spin-model-1"></a><a class="docs-heading-anchor-permalink" href="#Building-a-spin-model" title="Permalink"></a></h2><p>The basic pattern is</p><pre><code class="language-julia hljs">model = SpinModel(
+    geometry,
+    hamiltonian,
+)</code></pre><p>For example, a long-range transverse Ising interaction is</p><pre><code class="language-julia hljs">model = SpinModel(
+    Chain(100),
+    PowerLaw(
+        Ising(:x; J=1.0);
+        α=3.0,
+    ),
+)</code></pre><p>Once constructed, the model does not depend on the approximation used to evolve it.</p><p>For example, the same model can be used with DTWA,</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    Up(),
+    DTWA(
+        trajectories=1000,
+    );
+    tspan=(0.0, 4.0),
+)</code></pre><p>or with CTWA,</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    Up(),
+    CTWA(
+        cluster_size=2,
+        trajectories=1000,
+        sampling=DiscreteSampling(),
+    );
+    tspan=(0.0, 4.0),
+)</code></pre><p>This separation between the physical model and the approximation method is one of the central design principles of <code>TWA.jl</code>.</p><h2 id="Model,-state,-and-method-are-independent"><a class="docs-heading-anchor" href="#Model,-state,-and-method-are-independent">Model, state, and method are independent</a><a id="Model,-state,-and-method-are-independent-1"></a><a class="docs-heading-anchor-permalink" href="#Model,-state,-and-method-are-independent" title="Permalink"></a></h2><p>It is useful to think of a simulation as</p><pre><code class="language-text hljs">                 SpinModel
+              ┌─────────────┐
+              │  Geometry   │
+              │      +      │
+              │ Hamiltonian │
+              └─────────────┘
+                     │
+                     │
+       State ────────┼──────── Approximation
+                     │
+                     ▼
+                  simulate
+                     │
+                     ▼
+                   Result</code></pre><p>The model answers:</p><blockquote><p><strong>What physical system is being simulated?</strong></p></blockquote><p>The state answers:</p><blockquote><p><strong>How is the system initialized?</strong></p></blockquote><p>The approximation answers:</p><blockquote><p><strong>How is the quantum dynamics approximated?</strong></p></blockquote><p>Keeping these concepts separate makes it possible to reuse a physical model across different initial states and approximation methods.</p><h2 id="Next-steps"><a class="docs-heading-anchor" href="#Next-steps">Next steps</a><a id="Next-steps-1"></a><a class="docs-heading-anchor-permalink" href="#Next-steps" title="Permalink"></a></h2><p>Continue with <a href="../states/">Initial States</a> to define the starting quantum state, or see <a href="../dtwa/">DTWA</a> and <a href="../ctwa/">CTWA</a> for the available approximation methods.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../quickstart/">« Quick Start</a><a class="docs-footer-nextpage" href="../states/">Initial States »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Tuesday 1 September 2026 21:05">Tuesday 1 September 2026</span>. Using Julia version 1.12.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

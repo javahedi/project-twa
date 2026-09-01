@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Initial States · TWA.jl</title><meta name="title" content="Initial States · TWA.jl"/><meta property="og:title" content="Initial States · TWA.jl"/><meta property="twitter:title" content="Initial States · TWA.jl"/><meta name="description" content="Documentation for TWA.jl."/><meta property="og:description" content="Documentation for TWA.jl."/><meta property="twitter:description" content="Documentation for TWA.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TWA.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../quickstart/">Quick Start</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../models/">Models</a></li><li class="is-active"><a class="tocitem" href>Initial States</a><ul class="internal"><li><a class="tocitem" href="#Fully-polarized-states"><span>Fully polarized states</span></a></li><li><a class="tocitem" href="#Polarized-states"><span>Polarized states</span></a></li><li><a class="tocitem" href="#Domain-wall-state"><span>Domain-wall state</span></a></li><li><a class="tocitem" href="#States-and-phase-space-sampling"><span>States and phase-space sampling</span></a></li><li><a class="tocitem" href="#Example:-polarized-Ising-dynamics"><span>Example: polarized Ising dynamics</span></a></li><li><a class="tocitem" href="#Next-steps"><span>Next steps</span></a></li></ul></li><li><a class="tocitem" href="../dtwa/">DTWA</a></li><li><a class="tocitem" href="../ctwa/">CTWA</a></li><li><a class="tocitem" href="../observables/">Observables</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../../examples/long_range_ising/">Long-range Ising</a></li></ul></li><li><a class="tocitem" href="../../api/">API Reference</a></li><li><a class="tocitem" href="../../references/">References &amp; Citation</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>Initial States</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Initial States</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa/blob/main/docs/src/manual/states.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Initial-States"><a class="docs-heading-anchor" href="#Initial-States">Initial States</a><a id="Initial-States-1"></a><a class="docs-heading-anchor-permalink" href="#Initial-States" title="Permalink"></a></h1><p>Initial states in <code>TWA.jl</code> describe the quantum state of the spin system at <span>$t=0$</span>.</p><p>The initial state is specified independently of both the Hamiltonian and the approximation method:</p><pre><code class="language-julia hljs">using TWA
+
+model = SpinModel(
+    Chain(50),
+    XXZ(
+        J=1.0,
+        Δ=0.5,
+    ),
+)
+
+state = Up()
+
+method = DTWA(
+    trajectories=1000,
+)</code></pre><p>The same <code>state</code> can therefore be used with DTWA, Gaussian CTWA, or discrete CTWA.</p><h2 id="Fully-polarized-states"><a class="docs-heading-anchor" href="#Fully-polarized-states">Fully polarized states</a><a id="Fully-polarized-states-1"></a><a class="docs-heading-anchor-permalink" href="#Fully-polarized-states" title="Permalink"></a></h2><h3 id="Up"><a class="docs-heading-anchor" href="#Up">Up</a><a id="Up-1"></a><a class="docs-heading-anchor-permalink" href="#Up" title="Permalink"></a></h3><pre><code class="language-julia hljs">state = Up()</code></pre><p>represents the product state in which every spin is polarized along the positive <span>$z$</span> direction,</p><p class="math-container">\[|\psi_0\rangle
+=
+|\uparrow_z\rangle^{\otimes N}.\]</p><p>For every site,</p><p class="math-container">\[\langle \sigma^z_i\rangle = 1,
+\qquad
+\langle \sigma^x_i\rangle
+=
+\langle \sigma^y_i\rangle
+=
+0.\]</p><p>For example:</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    Up(),
+    DTWA(
+        trajectories=1000,
+    );
+    tspan=(0.0, 4.0),
+)</code></pre><h3 id="Down"><a class="docs-heading-anchor" href="#Down">Down</a><a id="Down-1"></a><a class="docs-heading-anchor-permalink" href="#Down" title="Permalink"></a></h3><pre><code class="language-julia hljs">state = Down()</code></pre><p>represents the product state</p><p class="math-container">\[|\psi_0\rangle
+=
+|\downarrow_z\rangle^{\otimes N},\]</p><p>with</p><p class="math-container">\[\langle \sigma^z_i\rangle = -1.\]</p><p>It can be used in exactly the same way:</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    Down(),
+    DTWA(
+        trajectories=1000,
+    );
+    tspan=(0.0, 4.0),
+)</code></pre><h2 id="Polarized-states"><a class="docs-heading-anchor" href="#Polarized-states">Polarized states</a><a id="Polarized-states-1"></a><a class="docs-heading-anchor-permalink" href="#Polarized-states" title="Permalink"></a></h2><p>Uniform product states polarized along an arbitrary Cartesian axis can be constructed with</p><pre><code class="language-julia hljs">Polarized(axis; sign=1)</code></pre><p>where <code>axis</code> is one of</p><pre><code class="language-julia hljs">:x
+:y
+:z</code></pre><p>and <code>sign</code> is either <code>+1</code> or <code>-1</code>.</p><p>For example,</p><pre><code class="language-julia hljs">Polarized(:x)</code></pre><p>represents polarization along <span>$+x$</span>, while</p><pre><code class="language-julia hljs">Polarized(:y; sign=-1)</code></pre><p>represents polarization along <span>$-y$</span>.</p><p>The convenience constructors</p><pre><code class="language-julia hljs">Up()
+Down()</code></pre><p>are equivalent to</p><pre><code class="language-julia hljs">Polarized(:z; sign=1)
+Polarized(:z; sign=-1)</code></pre><p>respectively.</p><h2 id="Domain-wall-state"><a class="docs-heading-anchor" href="#Domain-wall-state">Domain-wall state</a><a id="Domain-wall-state-1"></a><a class="docs-heading-anchor-permalink" href="#Domain-wall-state" title="Permalink"></a></h2><p>A spatially inhomogeneous product state can be constructed with</p><pre><code class="language-julia hljs">state = DomainWall()</code></pre><p>The domain-wall state divides the chain into oppositely polarized regions. It is useful for studying transport, relaxation, and the spreading of an initially inhomogeneous spin profile.</p><p>Schematically,</p><pre><code class="language-text hljs">↑ ↑ ↑ ↑ ↑ │ ↓ ↓ ↓ ↓ ↓</code></pre><p>For example:</p><pre><code class="language-julia hljs">model = SpinModel(
+    Chain(50),
+    XXZ(
+        J=1.0,
+        Δ=0.5,
+    ),
+)
+
+result = simulate(
+    model,
+    DomainWall(),
+    DTWA(
+        trajectories=1000,
+    );
+    tspan=(0.0, 12.0),
+)</code></pre><p>The same state can be simulated with CTWA:</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    DomainWall(),
+    CTWA(
+        cluster_size=2,
+        trajectories=1000,
+        sampling=DiscreteSampling(),
+    );
+    tspan=(0.0, 12.0),
+)</code></pre><h2 id="States-and-phase-space-sampling"><a class="docs-heading-anchor" href="#States-and-phase-space-sampling">States and phase-space sampling</a><a id="States-and-phase-space-sampling-1"></a><a class="docs-heading-anchor-permalink" href="#States-and-phase-space-sampling" title="Permalink"></a></h2><p>A state specifies the <strong>physical quantum initial condition</strong>.</p><p>It does not specify how that state is represented in phase space.</p><p>For example,</p><pre><code class="language-julia hljs">state = Up()</code></pre><p>can be combined with</p><pre><code class="language-julia hljs">DTWA(
+    trajectories=1000,
+)</code></pre><p>or with Gaussian cluster sampling,</p><pre><code class="language-julia hljs">CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=GaussianSampling(),
+)</code></pre><p>or with discrete cluster sampling,</p><pre><code class="language-julia hljs">CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=DiscreteSampling(),
+)</code></pre><p>In all three cases the physical initial state is the same. What changes is its phase-space representation and the approximation used for the subsequent dynamics.</p><p>This distinction is important:</p><pre><code class="language-text hljs">Physical initial state
+         │
+         ▼
+       State
+         │
+         ├──────── Gaussian sampling
+         │
+         └──────── Discrete sampling
+                     │
+                     ▼
+             Initial trajectories</code></pre><p>The sampling procedure is handled by the approximation method rather than by the state itself.</p><h2 id="Example:-polarized-Ising-dynamics"><a class="docs-heading-anchor" href="#Example:-polarized-Ising-dynamics">Example: polarized Ising dynamics</a><a id="Example:-polarized-Ising-dynamics-1"></a><a class="docs-heading-anchor-permalink" href="#Example:-polarized-Ising-dynamics" title="Permalink"></a></h2><p>The long-range Ising benchmark uses</p><pre><code class="language-julia hljs">model = SpinModel(
+    Chain(100),
+    PowerLaw(
+        Ising(:x; J=1.0);
+        α=3.0,
+    ),
+)
+
+state = Up()</code></pre><p>The initial spins point along <span>$z$</span>, while the interaction acts along <span>$x$</span>.</p><p>The same physical problem can then be studied using different phase-space approximations:</p><pre><code class="language-julia hljs">twa = CTWA(
+    cluster_size=1,
+    trajectories=1000,
+    sampling=GaussianSampling(),
+)
+
+dtwa = DTWA(
+    trajectories=1000,
+)
+
+gctwa = CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=GaussianSampling(),
+)
+
+dctwa = CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=DiscreteSampling(),
+)</code></pre><p>This is the comparison developed in the <a href="../../examples/long_range_ising/">Long-range Ising benchmark</a>.</p><h2 id="Next-steps"><a class="docs-heading-anchor" href="#Next-steps">Next steps</a><a id="Next-steps-1"></a><a class="docs-heading-anchor-permalink" href="#Next-steps" title="Permalink"></a></h2><p>Continue with <a href="../dtwa/">DTWA</a> to learn how discrete single-spin phase-space sampling works, or <a href="../ctwa/">CTWA</a> for cluster phase-space dynamics and Gaussian versus discrete cluster sampling.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../models/">« Models</a><a class="docs-footer-nextpage" href="../dtwa/">DTWA »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Tuesday 1 September 2026 21:05">Tuesday 1 September 2026</span>. Using Julia version 1.12.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

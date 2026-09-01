@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>CTWA · TWA.jl</title><meta name="title" content="CTWA · TWA.jl"/><meta property="og:title" content="CTWA · TWA.jl"/><meta property="twitter:title" content="CTWA · TWA.jl"/><meta name="description" content="Documentation for TWA.jl."/><meta property="og:description" content="Documentation for TWA.jl."/><meta property="twitter:description" content="Documentation for TWA.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TWA.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../quickstart/">Quick Start</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../models/">Models</a></li><li><a class="tocitem" href="../states/">Initial States</a></li><li><a class="tocitem" href="../dtwa/">DTWA</a></li><li class="is-active"><a class="tocitem" href>CTWA</a><ul class="internal"><li><a class="tocitem" href="#Clustering-the-spin-system"><span>Clustering the spin system</span></a></li><li><a class="tocitem" href="#Cluster-phase-space"><span>Cluster phase space</span></a></li><li><a class="tocitem" href="#Pauli-string-basis"><span>Pauli-string basis</span></a></li><li><a class="tocitem" href="#CTWA-dynamics"><span>CTWA dynamics</span></a></li><li><a class="tocitem" href="#Sampling-is-independent-of-clustering"><span>Sampling is independent of clustering</span></a></li><li><a class="tocitem" href="#Gaussian-CTWA"><span>Gaussian CTWA</span></a></li><li><a class="tocitem" href="#Discrete-CTWA"><span>Discrete CTWA</span></a></li><li><a class="tocitem" href="#Example:-an-initially-polarized-cluster"><span>Example: an initially polarized cluster</span></a></li><li><a class="tocitem" href="#TWA,-DTWA,-gcTWA,-and-dcTWA"><span>TWA, DTWA, gcTWA, and dcTWA</span></a></li><li><a class="tocitem" href="#Choosing-a-cluster-size"><span>Choosing a cluster size</span></a></li><li><a class="tocitem" href="#Monte-Carlo-convergence"><span>Monte Carlo convergence</span></a></li><li><a class="tocitem" href="#Example"><span>Example</span></a></li><li><a class="tocitem" href="#Reference"><span>Reference</span></a></li><li><a class="tocitem" href="#Next-steps"><span>Next steps</span></a></li></ul></li><li><a class="tocitem" href="../observables/">Observables</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../../examples/long_range_ising/">Long-range Ising</a></li></ul></li><li><a class="tocitem" href="../../api/">API Reference</a></li><li><a class="tocitem" href="../../references/">References &amp; Citation</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>CTWA</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>CTWA</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa/blob/main/docs/src/manual/ctwa.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Cluster-Truncated-Wigner-Approximation"><a class="docs-heading-anchor" href="#Cluster-Truncated-Wigner-Approximation">Cluster Truncated-Wigner Approximation</a><a id="Cluster-Truncated-Wigner-Approximation-1"></a><a class="docs-heading-anchor-permalink" href="#Cluster-Truncated-Wigner-Approximation" title="Permalink"></a></h1><p>The cluster truncated-Wigner approximation (CTWA) extends the truncated-Wigner approach by grouping physical spins into clusters.</p><p>Instead of representing every spin only by three classical spin components, CTWA represents a cluster of <span>$n$</span> spin-<span>$1/2$</span> degrees of freedom using the complete set of nontrivial Pauli strings acting within that cluster.</p><p>This allows quantum correlations <strong>inside each cluster</strong> to be included directly in the cluster phase-space description, while interactions between different clusters are treated semiclassically.</p><p>In <code>TWA.jl</code>, a CTWA method is constructed with</p><pre><code class="language-julia hljs">method = CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=DiscreteSampling(),
+)</code></pre><p>and uses the same <code>simulate</code> interface as DTWA:</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    state,
+    method;
+    tspan=(0.0, 10.0),
+    saveat=0.05,
+)</code></pre><h2 id="Clustering-the-spin-system"><a class="docs-heading-anchor" href="#Clustering-the-spin-system">Clustering the spin system</a><a id="Clustering-the-spin-system-1"></a><a class="docs-heading-anchor-permalink" href="#Clustering-the-spin-system" title="Permalink"></a></h2><p>Consider a chain of <span>$N$</span> physical spins.</p><p>For cluster size</p><pre><code class="language-julia hljs">cluster_size = 2</code></pre><p>the chain is partitioned schematically as</p><pre><code class="language-text hljs">spin:      1   2 | 3   4 | 5   6 | 7   8
+cluster:     1   |   2   |   3   |   4</code></pre><p>For cluster size four,</p><pre><code class="language-text hljs">spin:      1   2   3   4 | 5   6   7   8
+cluster:          1       |         2</code></pre><p>The current contiguous clustering scheme requires the number of physical sites to be divisible by the requested cluster size.</p><p>For example, a 100-site chain can be simulated with</p><pre><code class="language-julia hljs">CTWA(cluster_size=2, trajectories=1000)</code></pre><p>or</p><pre><code class="language-julia hljs">CTWA(cluster_size=4, trajectories=1000)</code></pre><p>because both cluster sizes divide 100.</p><h2 id="Cluster-phase-space"><a class="docs-heading-anchor" href="#Cluster-phase-space">Cluster phase space</a><a id="Cluster-phase-space-1"></a><a class="docs-heading-anchor-permalink" href="#Cluster-phase-space" title="Permalink"></a></h2><p>A cluster containing <span>$n$</span> spin-<span>$1/2$</span> particles has Hilbert-space dimension</p><p class="math-container">\[D = 2^n.\]</p><p>A complete operator basis consists of the identity together with all nontrivial Pauli strings.</p><p>The number of nontrivial cluster generators is therefore</p><p class="math-container">\[D^2-1
+=
+4^n-1.\]</p><p>For example:</p><table><tr><th style="text-align: right">Cluster size <span>$n$</span></th><th style="text-align: right">Hilbert dimension <span>$2^n$</span></th><th style="text-align: right">Phase-space coordinates <span>$4^n-1$</span></th></tr><tr><td style="text-align: right">1</td><td style="text-align: right">2</td><td style="text-align: right">3</td></tr><tr><td style="text-align: right">2</td><td style="text-align: right">4</td><td style="text-align: right">15</td></tr><tr><td style="text-align: right">3</td><td style="text-align: right">8</td><td style="text-align: right">63</td></tr><tr><td style="text-align: right">4</td><td style="text-align: right">16</td><td style="text-align: right">255</td></tr><tr><td style="text-align: right">5</td><td style="text-align: right">32</td><td style="text-align: right">1023</td></tr><tr><td style="text-align: right">6</td><td style="text-align: right">64</td><td style="text-align: right">4095</td></tr></table><p>This exponential growth is the central computational tradeoff of CTWA.</p><p>Larger clusters retain a richer description of intra-cluster quantum correlations, but the number of dynamical variables per cluster grows as <span>$4^n-1$</span>.</p><h2 id="Pauli-string-basis"><a class="docs-heading-anchor" href="#Pauli-string-basis">Pauli-string basis</a><a id="Pauli-string-basis-1"></a><a class="docs-heading-anchor-permalink" href="#Pauli-string-basis" title="Permalink"></a></h2><p>For a two-spin cluster, the nontrivial operator basis contains</p><pre><code class="language-text hljs">IX  IY  IZ
+XI  XX  XY  XZ
+YI  YX  YY  YZ
+ZI  ZX  ZY  ZZ</code></pre><p>where, for example,</p><p class="math-container">\[XY =
+\sigma_1^x\sigma_2^y.\]</p><p>Each nontrivial Pauli string is associated with one classical CTWA phase-space coordinate.</p><p>For an <span>$n$</span>-spin cluster, the cluster variables can therefore be written as</p><p class="math-container">\[x^\mu,
+\qquad
+\mu=1,\ldots,4^n-1.\]</p><p>The single-spin case <span>$n=1$</span> contains only</p><p class="math-container">\[X,\quad Y,\quad Z,\]</p><p>and therefore reduces structurally to the familiar three-component classical-spin phase space.</p><h2 id="CTWA-dynamics"><a class="docs-heading-anchor" href="#CTWA-dynamics">CTWA dynamics</a><a id="CTWA-dynamics-1"></a><a class="docs-heading-anchor-permalink" href="#CTWA-dynamics" title="Permalink"></a></h2><p>Let <span>$X_\mu$</span> denote the cluster Pauli-string generators.</p><p>Their commutators define the cluster algebra,</p><p class="math-container">\[[X_\mu,X_\nu]
+=
+2i
+\sum_\rho
+f_{\mu\nu\rho}X_\rho,\]</p><p>where <span>$f_{\mu\nu\rho}$</span> are the structure constants.</p><p>The corresponding classical CTWA equations take the form</p><p class="math-container">\[\dot{x}_c^\mu
+=
+2
+\sum_{\nu,\rho}
+f_{\mu\nu\rho}
+\frac{\partial H_W}{\partial x_c^\nu}
+x_c^\rho ,\]</p><p>where <span>$c$</span> labels the cluster and <span>$H_W$</span> is the phase-space Hamiltonian.</p><p>Interactions entirely inside a cluster contribute to the cluster Hamiltonian directly, whereas interactions connecting different clusters produce couplings between their phase-space variables.</p><p>The construction reduces to the ordinary single-spin classical equations when</p><pre><code class="language-julia hljs">cluster_size=1</code></pre><p>so the single-spin and cluster approximations share the same underlying framework.</p><h2 id="Sampling-is-independent-of-clustering"><a class="docs-heading-anchor" href="#Sampling-is-independent-of-clustering">Sampling is independent of clustering</a><a id="Sampling-is-independent-of-clustering-1"></a><a class="docs-heading-anchor-permalink" href="#Sampling-is-independent-of-clustering" title="Permalink"></a></h2><p>An important design choice in <code>TWA.jl</code> is that</p><blockquote><p><strong>cluster size and initial phase-space sampling are independent approximation choices.</strong></p></blockquote><p>The cluster dynamics are selected by <code>CTWA</code>, while the initial phase-space representation is selected separately through the <code>sampling</code> argument.</p><p>Two sampling strategies are currently available:</p><pre><code class="language-julia hljs">GaussianSampling()</code></pre><p>and</p><pre><code class="language-julia hljs">DiscreteSampling()</code></pre><p>Thus,</p><pre><code class="language-julia hljs">CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=GaussianSampling(),
+)</code></pre><p>and</p><pre><code class="language-julia hljs">CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=DiscreteSampling(),
+)</code></pre><p>have the <strong>same cluster size and cluster equations of motion</strong> but different representations of the initial quantum state.</p><p>This makes direct comparisons between Gaussian and discrete cluster sampling possible.</p><h2 id="Gaussian-CTWA"><a class="docs-heading-anchor" href="#Gaussian-CTWA">Gaussian CTWA</a><a id="Gaussian-CTWA-1"></a><a class="docs-heading-anchor-permalink" href="#Gaussian-CTWA" title="Permalink"></a></h2><p>Gaussian CTWA, abbreviated here as <strong>gcTWA</strong>, approximates the initial cluster phase-space distribution using Gaussian random variables chosen to reproduce the required initial moments.</p><p>It is selected with</p><pre><code class="language-julia hljs">method = CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=GaussianSampling(),
+)</code></pre><p>For example:</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    state,
+    method;
+    tspan=(0.0, 4.0),
+    saveat=0.05,
+)</code></pre><p>The Gaussian construction provides a continuous approximation to the initial cluster Wigner distribution.</p><h2 id="Discrete-CTWA"><a class="docs-heading-anchor" href="#Discrete-CTWA">Discrete CTWA</a><a id="Discrete-CTWA-1"></a><a class="docs-heading-anchor-permalink" href="#Discrete-CTWA" title="Permalink"></a></h2><p>Discrete CTWA, abbreviated here as <strong>dcTWA</strong>, uses discrete phase-space samples to initialize the cluster coordinates.</p><p>It is selected with</p><pre><code class="language-julia hljs">method = CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=DiscreteSampling(),
+)</code></pre><p>The key point is that the <span>$4^n-1$</span> cluster coordinates are <strong>not sampled independently</strong>.</p><p>Instead, the physical spins inside the cluster are first sampled from their discrete single-spin phase spaces.</p><p>For an <span>$n$</span>-spin product state, let</p><p class="math-container">\[s_{j,\alpha}\]</p><p>denote the sampled component <span>$\alpha$</span> of physical spin <span>$j$</span>.</p><p>A cluster Pauli string</p><p class="math-container">\[P_\mu
+=
+\sigma_1^{a_1}
+\sigma_2^{a_2}
+\cdots
+\sigma_n^{a_n}\]</p><p>is then assigned the phase-space value</p><p class="math-container">\[x^\mu(0)
+=
+\prod_{j:a_j\neq I}
+s_{j,a_j}.\]</p><p>For example, in a two-spin cluster,</p><p class="math-container">\[x^{XI} = s_{1,x},
+\qquad
+x^{IY} = s_{2,y},\]</p><p>and consequently</p><p class="math-container">\[x^{XY}
+=
+s_{1,x}s_{2,y}
+=
+x^{XI}x^{IY}.\]</p><p>Similarly,</p><p class="math-container">\[x^{ZZ}
+=
+s_{1,z}s_{2,z}.\]</p><p>The multi-spin cluster coordinates are therefore constructed consistently from the <strong>same sampled physical-spin configuration</strong>.</p><p>This preserves the product structure of the discrete phase-space representation instead of treating every cluster generator as an independent random variable.</p><h2 id="Example:-an-initially-polarized-cluster"><a class="docs-heading-anchor" href="#Example:-an-initially-polarized-cluster">Example: an initially polarized cluster</a><a id="Example:-an-initially-polarized-cluster-1"></a><a class="docs-heading-anchor-permalink" href="#Example:-an-initially-polarized-cluster" title="Permalink"></a></h2><p>For</p><pre><code class="language-julia hljs">state = Up()</code></pre><p>each physical spin is polarized along <span>$+z$</span>.</p><p>In the discrete single-spin representation,</p><p class="math-container">\[s_z=1,
+\qquad
+s_x=\pm1,
+\qquad
+s_y=\pm1.\]</p><p>For a two-spin cluster this immediately implies</p><p class="math-container">\[x^{ZI}=1,
+\qquad
+x^{IZ}=1,
+\qquad
+x^{ZZ}=1,\]</p><p>while coordinates containing transverse components fluctuate between trajectories.</p><p>For example,</p><p class="math-container">\[x^{XX}
+=
+x^{XI}x^{IX}.\]</p><p>This illustrates why dcTWA samples physical spins first and constructs the complete cluster phase-space point afterward.</p><h2 id="TWA,-DTWA,-gcTWA,-and-dcTWA"><a class="docs-heading-anchor" href="#TWA,-DTWA,-gcTWA,-and-dcTWA">TWA, DTWA, gcTWA, and dcTWA</a><a id="TWA,-DTWA,-gcTWA,-and-dcTWA-1"></a><a class="docs-heading-anchor-permalink" href="#TWA,-DTWA,-gcTWA,-and-dcTWA" title="Permalink"></a></h2><p>The relationship between the methods can be summarized as</p><table><tr><th style="text-align: right"></th><th style="text-align: right">Single-spin <span>$n=1$</span></th><th style="text-align: right">Cluster <span>$n&gt;1$</span></th></tr><tr><td style="text-align: right"><strong>Gaussian sampling</strong></td><td style="text-align: right">TWA</td><td style="text-align: right">gcTWA</td></tr><tr><td style="text-align: right"><strong>Discrete sampling</strong></td><td style="text-align: right">DTWA</td><td style="text-align: right">dcTWA</td></tr></table><p>In <code>TWA.jl</code>, these cases can be written as follows.</p><p>Traditional single-spin Gaussian TWA:</p><pre><code class="language-julia hljs">twa = CTWA(
+    cluster_size=1,
+    trajectories=1000,
+    sampling=GaussianSampling(),
+)</code></pre><p>Discrete TWA:</p><pre><code class="language-julia hljs">dtwa = DTWA(
+    trajectories=1000,
+)</code></pre><p>Gaussian CTWA:</p><pre><code class="language-julia hljs">gctwa = CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=GaussianSampling(),
+)</code></pre><p>Discrete CTWA:</p><pre><code class="language-julia hljs">dctwa = CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=DiscreteSampling(),
+)</code></pre><p>This organization is intentional: Gaussian and discrete sampling are properties of the initial phase-space representation rather than separate dynamical approximations.</p><h2 id="Choosing-a-cluster-size"><a class="docs-heading-anchor" href="#Choosing-a-cluster-size">Choosing a cluster size</a><a id="Choosing-a-cluster-size-1"></a><a class="docs-heading-anchor-permalink" href="#Choosing-a-cluster-size" title="Permalink"></a></h2><p>Increasing the cluster size increases the amount of quantum information represented explicitly inside each cluster.</p><p>However, the phase-space dimension grows exponentially:</p><p class="math-container">\[4^n-1.\]</p><p>Consequently, cluster size should be treated as a convergence and accuracy parameter subject to computational constraints.</p><p>A practical study might compare</p><pre><code class="language-julia hljs">CTWA(
+    cluster_size=1,
+    trajectories=1000,
+    sampling=DiscreteSampling(),
+)
+
+CTWA(
+    cluster_size=2,
+    trajectories=1000,
+    sampling=DiscreteSampling(),
+)
+
+CTWA(
+    cluster_size=4,
+    trajectories=1000,
+    sampling=DiscreteSampling(),
+)</code></pre><p>when the system size is compatible with all three clusterings.</p><div class="admonition is-info" id="Note-4aafd00ea41844ca"><header class="admonition-header">Note<a class="admonition-anchor" href="#Note-4aafd00ea41844ca" title="Permalink"></a></header><div class="admonition-body"><p>Increasing the cluster size does not by itself guarantee a specific error reduction for every observable, model, and time scale. Results should be checked for convergence in both cluster size and trajectory number whenever possible.</p></div></div><h2 id="Monte-Carlo-convergence"><a class="docs-heading-anchor" href="#Monte-Carlo-convergence">Monte Carlo convergence</a><a id="Monte-Carlo-convergence-1"></a><a class="docs-heading-anchor-permalink" href="#Monte-Carlo-convergence" title="Permalink"></a></h2><p>Like DTWA, CTWA obtains observables from an ensemble of trajectories.</p><p>The parameter</p><pre><code class="language-julia hljs">trajectories=1000</code></pre><p>controls the number of sampled initial conditions.</p><p>Convergence with trajectory number should be checked separately from convergence with cluster size.</p><p>These are two different numerical questions:</p><pre><code class="language-text hljs">trajectories
+    │
+    └── controls Monte Carlo sampling noise
+
+cluster_size
+    │
+    └── controls the cluster approximation</code></pre><p>For gcTWA and dcTWA, the sampling strategy introduces a third independent choice:</p><pre><code class="language-text hljs">CTWA calculation
+     │
+     ├── cluster size
+     ├── sampling strategy
+     └── number of trajectories</code></pre><h2 id="Example"><a class="docs-heading-anchor" href="#Example">Example</a><a id="Example-1"></a><a class="docs-heading-anchor-permalink" href="#Example" title="Permalink"></a></h2><p>Consider the long-range Ising model</p><pre><code class="language-julia hljs">model = SpinModel(
+    Chain(100),
+    PowerLaw(
+        Ising(:x; J=1.0);
+        α=3.0,
+    ),
+)
+
+state = Up()</code></pre><p>A two-spin discrete CTWA calculation is</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    state,
+    CTWA(
+        cluster_size=2,
+        trajectories=1000,
+        sampling=DiscreteSampling(),
+    );
+    tspan=(0.0, 4.0),
+    saveat=0.05,
+)</code></pre><p>The corresponding Gaussian calculation requires only changing the sampling strategy:</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    state,
+    CTWA(
+        cluster_size=2,
+        trajectories=1000,
+        sampling=GaussianSampling(),
+    );
+    tspan=(0.0, 4.0),
+    saveat=0.05,
+)</code></pre><p>The model, state, cluster size, trajectory number, and simulation interval remain unchanged.</p><h2 id="Reference"><a class="docs-heading-anchor" href="#Reference">Reference</a><a id="Reference-1"></a><a class="docs-heading-anchor-permalink" href="#Reference" title="Permalink"></a></h2><p>For cluster TWA and the discrete cluster sampling formulation used here, see:</p><p>A. Braemer, J. Vahedi, and M. Gärttner,   <em>Cluster truncated Wigner approximation for bond-disordered Heisenberg spin models</em>,   <strong>Physical Review B 110</strong>, 054204 (2024).   DOI: <code>10.1103/PhysRevB.110.054204</code></p><p>See <a href="../../references/">References and Citation</a> for the complete citation and BibTeX entry.</p><h2 id="Next-steps"><a class="docs-heading-anchor" href="#Next-steps">Next steps</a><a id="Next-steps-1"></a><a class="docs-heading-anchor-permalink" href="#Next-steps" title="Permalink"></a></h2><p>See <a href="../observables/">Observables</a> for extracting physical quantities from DTWA and CTWA results.</p><p>The <a href="../../examples/long_range_ising/">Long-range Ising benchmark</a> provides a direct comparison of the exact solution, TWA, DTWA, gcTWA, and dcTWA.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../dtwa/">« DTWA</a><a class="docs-footer-nextpage" href="../observables/">Observables »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Tuesday 1 September 2026 21:05">Tuesday 1 September 2026</span>. Using Julia version 1.12.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

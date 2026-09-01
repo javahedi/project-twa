@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>DTWA · TWA.jl</title><meta name="title" content="DTWA · TWA.jl"/><meta property="og:title" content="DTWA · TWA.jl"/><meta property="twitter:title" content="DTWA · TWA.jl"/><meta name="description" content="Documentation for TWA.jl."/><meta property="og:description" content="Documentation for TWA.jl."/><meta property="twitter:description" content="Documentation for TWA.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TWA.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../quickstart/">Quick Start</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../models/">Models</a></li><li><a class="tocitem" href="../states/">Initial States</a></li><li class="is-active"><a class="tocitem" href>DTWA</a><ul class="internal"><li><a class="tocitem" href="#Basic-idea"><span>Basic idea</span></a></li><li><a class="tocitem" href="#Discrete-initial-sampling"><span>Discrete initial sampling</span></a></li><li><a class="tocitem" href="#Equations-of-motion"><span>Equations of motion</span></a></li><li><a class="tocitem" href="#Example"><span>Example</span></a></li><li><a class="tocitem" href="#Monte-Carlo-convergence"><span>Monte Carlo convergence</span></a></li><li><a class="tocitem" href="#DTWA-and-TWA"><span>DTWA and TWA</span></a></li><li><a class="tocitem" href="#Reference"><span>Reference</span></a></li><li><a class="tocitem" href="#Next-steps"><span>Next steps</span></a></li></ul></li><li><a class="tocitem" href="../ctwa/">CTWA</a></li><li><a class="tocitem" href="../observables/">Observables</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../../examples/long_range_ising/">Long-range Ising</a></li></ul></li><li><a class="tocitem" href="../../api/">API Reference</a></li><li><a class="tocitem" href="../../references/">References &amp; Citation</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>DTWA</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>DTWA</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa/blob/main/docs/src/manual/dtwa.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Discrete-Truncated-Wigner-Approximation"><a class="docs-heading-anchor" href="#Discrete-Truncated-Wigner-Approximation">Discrete Truncated-Wigner Approximation</a><a id="Discrete-Truncated-Wigner-Approximation-1"></a><a class="docs-heading-anchor-permalink" href="#Discrete-Truncated-Wigner-Approximation" title="Permalink"></a></h1><p>The discrete truncated-Wigner approximation (DTWA) is a semiclassical phase-space method for simulating the dynamics of interacting quantum spin systems.</p><p>Instead of evolving the exponentially large many-body wavefunction, DTWA samples an ensemble of classical spin configurations from a discrete phase-space representation of the initial quantum state. Each configuration is evolved independently using classical equations of motion, and observables are obtained by averaging over the resulting trajectories.</p><p>In <code>TWA.jl</code>, DTWA is selected with</p><pre><code class="language-julia hljs">method = DTWA(
+    trajectories=1000,
+)</code></pre><p>and used through the common simulation interface:</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    state,
+    method;
+    tspan=(0.0, 10.0),
+    saveat=0.05,
+)</code></pre><h2 id="Basic-idea"><a class="docs-heading-anchor" href="#Basic-idea">Basic idea</a><a id="Basic-idea-1"></a><a class="docs-heading-anchor-permalink" href="#Basic-idea" title="Permalink"></a></h2><p>Consider a system of <span>$N$</span> spin-<span>$1/2$</span> degrees of freedom.</p><p><code>TWA.jl</code> uses Pauli variables</p><p class="math-container">\[\mathbf{s}_i =
+\left(
+s_i^x,
+s_i^y,
+s_i^z
+\right)\]</p><p>for every physical site <span>$i$</span>.</p><p>The DTWA calculation consists schematically of</p><pre><code class="language-text hljs">Quantum initial state
+        │
+        ▼
+Discrete phase-space sampling
+        │
+        ├── trajectory 1
+        ├── trajectory 2
+        ├── trajectory 3
+        │       ⋮
+        └── trajectory M
+                │
+                ▼
+       Classical evolution
+                │
+                ▼
+       Ensemble averaging
+                │
+                ▼
+          Observables</code></pre><p>The number of sampled trajectories is controlled by</p><pre><code class="language-julia hljs">DTWA(
+    trajectories=M,
+)</code></pre><p>Increasing <code>M</code> reduces Monte Carlo sampling noise but increases the computational cost.</p><h2 id="Discrete-initial-sampling"><a class="docs-heading-anchor" href="#Discrete-initial-sampling">Discrete initial sampling</a><a id="Discrete-initial-sampling-1"></a><a class="docs-heading-anchor-permalink" href="#Discrete-initial-sampling" title="Permalink"></a></h2><p>The defining feature of DTWA is the use of a <strong>discrete spin phase space</strong> for the initial conditions.</p><p>For example, consider a spin polarized along <span>$+z$</span>,</p><p class="math-container">\[|\uparrow_z\rangle .\]</p><p>Its exact one-spin expectation values are</p><p class="math-container">\[\langle \sigma^x\rangle = 0,
+\qquad
+\langle \sigma^y\rangle = 0,
+\qquad
+\langle \sigma^z\rangle = 1.\]</p><p>In the discrete representation used by DTWA, an individual trajectory can instead start with</p><p class="math-container">\[s^z = 1,
+\qquad
+s^x = \pm 1,
+\qquad
+s^y = \pm 1,\]</p><p>where the transverse components are sampled from the appropriate discrete distribution.</p><p>Their ensemble averages reproduce the initial spin expectation values:</p><p class="math-container">\[\overline{s^x}=0,
+\qquad
+\overline{s^y}=0,
+\qquad
+\overline{s^z}=1.\]</p><p>The fluctuations of the individual trajectories encode information about the initial quantum fluctuations.</p><p>The user normally does not perform this sampling explicitly. Given</p><pre><code class="language-julia hljs">state = Up()</code></pre><p>and</p><pre><code class="language-julia hljs">method = DTWA(
+    trajectories=1000,
+)</code></pre><p><code>simulate</code> constructs the initial discrete trajectories automatically.</p><h2 id="Equations-of-motion"><a class="docs-heading-anchor" href="#Equations-of-motion">Equations of motion</a><a id="Equations-of-motion-1"></a><a class="docs-heading-anchor-permalink" href="#Equations-of-motion" title="Permalink"></a></h2><p>For a Hamiltonian written in the Pauli convention</p><p class="math-container">\[H =
+\sum_{i&lt;j}
+\sum_{\alpha=x,y,z}
+J_{ij}^{\alpha}
+\sigma_i^\alpha\sigma_j^\alpha
++
+\sum_i
+\sum_{\alpha=x,y,z}
+h_i^\alpha\sigma_i^\alpha,\]</p><p>the classical spin variables evolve according to precession in an effective field.</p><p>In the convention used by <code>TWA.jl</code>,</p><p class="math-container">\[\dot{\mathbf{s}}_i
+=
+2\,
+\mathbf{h}_{\mathrm{eff},i}
+\times
+\mathbf{s}_i ,\]</p><p>with</p><p class="math-container">\[h_{\mathrm{eff},i}^{\alpha}
+=
+h_i^\alpha
++
+\sum_{j\neq i}
+J_{ij}^{\alpha}s_j^\alpha .\]</p><div class="admonition is-info" id="Spin-convention-bb8400f20d9d1812"><header class="admonition-header">Spin convention<a class="admonition-anchor" href="#Spin-convention-bb8400f20d9d1812" title="Permalink"></a></header><div class="admonition-body"><p><code>TWA.jl</code> uses Pauli matrices <span>$\sigma^\alpha$</span> as the microscopic variables. This is why the equations contain the factor of <code>2</code> shown above.</p></div></div><p>Each sampled initial condition is evolved independently using these equations.</p><h2 id="Example"><a class="docs-heading-anchor" href="#Example">Example</a><a id="Example-1"></a><a class="docs-heading-anchor-permalink" href="#Example" title="Permalink"></a></h2><p>Consider a long-range Ising chain,</p><pre><code class="language-julia hljs">using TWA
+
+model = SpinModel(
+    Chain(100),
+    PowerLaw(
+        Ising(:x; J=1.0);
+        α=3.0,
+    ),
+)
+
+state = Up()</code></pre><p>A DTWA calculation can be performed with</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    state,
+    DTWA(
+        trajectories=1000,
+    );
+    tspan=(0.0, 4.0),
+    saveat=0.05,
+)</code></pre><p>The longitudinal magnetization is then obtained with</p><pre><code class="language-julia hljs">mz = expectation(
+    result,
+    Magnetization(:z),
+)</code></pre><p>and the corresponding times with</p><pre><code class="language-julia hljs">ts = times(result)</code></pre><h2 id="Monte-Carlo-convergence"><a class="docs-heading-anchor" href="#Monte-Carlo-convergence">Monte Carlo convergence</a><a id="Monte-Carlo-convergence-1"></a><a class="docs-heading-anchor-permalink" href="#Monte-Carlo-convergence" title="Permalink"></a></h2><p>DTWA observables are estimated from a finite ensemble of trajectories.</p><p>Consequently, numerical results contain statistical sampling noise.</p><p>A calculation should therefore be checked for convergence with respect to the number of trajectories.</p><p>For example,</p><pre><code class="language-julia hljs">DTWA(trajectories=100)
+DTWA(trajectories=1000)
+DTWA(trajectories=10000)</code></pre><p>represent increasingly large Monte Carlo ensembles.</p><p>The appropriate number of trajectories depends on the observable, system size, model, and desired statistical accuracy.</p><h2 id="DTWA-and-TWA"><a class="docs-heading-anchor" href="#DTWA-and-TWA">DTWA and TWA</a><a id="DTWA-and-TWA-1"></a><a class="docs-heading-anchor-permalink" href="#DTWA-and-TWA" title="Permalink"></a></h2><p>The distinction between traditional TWA and DTWA is particularly clear for spin-<span>$1/2$</span> systems.</p><p>Both approaches evolve semiclassical spin variables. The important difference is the representation of the initial quantum fluctuations.</p><p>In the terminology used throughout these documentation examples:</p><table><tr><th style="text-align: right">Method</th><th style="text-align: right">Cluster size</th><th style="text-align: right">Initial sampling</th></tr><tr><td style="text-align: right">TWA</td><td style="text-align: right">1</td><td style="text-align: right">Gaussian</td></tr><tr><td style="text-align: right">DTWA</td><td style="text-align: right">1</td><td style="text-align: right">Discrete</td></tr></table><p>Within the unified CTWA machinery, the Gaussian single-spin case can therefore be represented as</p><pre><code class="language-julia hljs">CTWA(
+    cluster_size=1,
+    trajectories=1000,
+    sampling=GaussianSampling(),
+)</code></pre><p>whereas discrete single-spin TWA is exposed directly through</p><pre><code class="language-julia hljs">DTWA(
+    trajectories=1000,
+)</code></pre><p>This distinction is useful when comparing the effect of Gaussian and discrete phase-space sampling while keeping the underlying classical single-spin dynamics fixed.</p><h2 id="Reference"><a class="docs-heading-anchor" href="#Reference">Reference</a><a id="Reference-1"></a><a class="docs-heading-anchor-permalink" href="#Reference" title="Permalink"></a></h2><p>The DTWA approach for interacting spin systems is based on the discrete phase-space formulation developed in:</p><p>J. Schachenmayer, A. Pikovski, and A. M. Rey,   <em>Many-Body Quantum Spin Dynamics with Monte Carlo Trajectories on a Discrete Phase Space</em>,   <strong>Physical Review X 5</strong>, 011022 (2015).   DOI: <code>10.1103/PhysRevX.5.011022</code></p><p>See <a href="../../references/">References and Citation</a> for the full citation and BibTeX entry.</p><h2 id="Next-steps"><a class="docs-heading-anchor" href="#Next-steps">Next steps</a><a id="Next-steps-1"></a><a class="docs-heading-anchor-permalink" href="#Next-steps" title="Permalink"></a></h2><p>See <a href="../ctwa/">CTWA</a> for the cluster generalization and the distinction between Gaussian and discrete cluster sampling.</p><p>The <a href="../../examples/long_range_ising/">Long-range Ising benchmark</a> compares TWA, DTWA, Gaussian CTWA, and discrete CTWA against an exact solution.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../states/">« Initial States</a><a class="docs-footer-nextpage" href="../ctwa/">CTWA »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Tuesday 1 September 2026 21:05">Tuesday 1 September 2026</span>. Using Julia version 1.12.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

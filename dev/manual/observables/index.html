@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Observables · TWA.jl</title><meta name="title" content="Observables · TWA.jl"/><meta property="og:title" content="Observables · TWA.jl"/><meta property="twitter:title" content="Observables · TWA.jl"/><meta name="description" content="Documentation for TWA.jl."/><meta property="og:description" content="Documentation for TWA.jl."/><meta property="twitter:description" content="Documentation for TWA.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">TWA.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../quickstart/">Quick Start</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../models/">Models</a></li><li><a class="tocitem" href="../states/">Initial States</a></li><li><a class="tocitem" href="../dtwa/">DTWA</a></li><li><a class="tocitem" href="../ctwa/">CTWA</a></li><li class="is-active"><a class="tocitem" href>Observables</a><ul class="internal"><li><a class="tocitem" href="#Conventions"><span>Conventions</span></a></li><li><a class="tocitem" href="#Simulation-times"><span>Simulation times</span></a></li><li><a class="tocitem" href="#Magnetization"><span>Magnetization</span></a></li><li><a class="tocitem" href="#Local-observables"><span>Local observables</span></a></li><li><a class="tocitem" href="#Two-point-correlations"><span>Two-point correlations</span></a></li><li><a class="tocitem" href="#Connected-correlations"><span>Connected correlations</span></a></li><li><a class="tocitem" href="#Same-site-Pauli-products"><span>Same-site Pauli products</span></a></li><li><a class="tocitem" href="#Collective-observables"><span>Collective observables</span></a></li><li><a class="tocitem" href="#Collective-variance"><span>Collective variance</span></a></li><li><a class="tocitem" href="#Mixed-collective-correlations"><span>Mixed collective correlations</span></a></li><li><a class="tocitem" href="#Correlation-profiles"><span>Correlation profiles</span></a></li><li><a class="tocitem" href="#Structure-factors"><span>Structure factors</span></a></li><li><a class="tocitem" href="#Physical-sites-versus-CTWA-clusters"><span>Physical sites versus CTWA clusters</span></a></li><li><a class="tocitem" href="#Statistical-convergence"><span>Statistical convergence</span></a></li><li><a class="tocitem" href="#Example-workflow"><span>Example workflow</span></a></li><li><a class="tocitem" href="#Next-steps"><span>Next steps</span></a></li></ul></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../../examples/long_range_ising/">Long-range Ising</a></li></ul></li><li><a class="tocitem" href="../../api/">API Reference</a></li><li><a class="tocitem" href="../../references/">References &amp; Citation</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>Observables</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Observables</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/javahedi/project-twa/blob/main/docs/src/manual/observables.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Observables"><a class="docs-heading-anchor" href="#Observables">Observables</a><a id="Observables-1"></a><a class="docs-heading-anchor-permalink" href="#Observables" title="Permalink"></a></h1><p>Simulation results in <code>TWA.jl</code> contain an ensemble of phase-space trajectories. Physical observables are obtained by averaging the corresponding quantities over this ensemble.</p><p>The main user interface is</p><pre><code class="language-julia hljs">expectation(
+    result,
+    observable,
+)</code></pre><p>The same observable interface is used for DTWA and CTWA results.</p><h2 id="Conventions"><a class="docs-heading-anchor" href="#Conventions">Conventions</a><a id="Conventions-1"></a><a class="docs-heading-anchor-permalink" href="#Conventions" title="Permalink"></a></h2><p><code>TWA.jl</code> uses Pauli matrices as the microscopic spin variables,</p><p class="math-container">\[\sigma_i^x,\qquad
+\sigma_i^y,\qquad
+\sigma_i^z.\]</p><p>The collective Pauli operator is defined as</p><p class="math-container">\[S^\alpha
+=
+\sum_{i=1}^{N}
+\sigma_i^\alpha.\]</p><p>Consequently, the magnetization density is</p><p class="math-container">\[m_\alpha
+=
+\frac{\langle S^\alpha\rangle}{N}
+=
+\frac{1}{N}
+\sum_i
+\langle\sigma_i^\alpha\rangle.\]</p><p>For a fully polarized <code>Up()</code> state,</p><p class="math-container">\[m_z(0)=1.\]</p><div class="admonition is-warning" id="Pauli-versus-spin-1/2-convention-173a2b37a49a7843"><header class="admonition-header">Pauli versus spin-1/2 convention<a class="admonition-anchor" href="#Pauli-versus-spin-1/2-convention-173a2b37a49a7843" title="Permalink"></a></header><div class="admonition-body"><p>Some literature defines physical spin operators as</p><p class="math-container">\[\hat{s}_i^\alpha=\frac{1}{2}\sigma_i^\alpha.\]</p><p>In that convention the fully polarized magnetization per spin is <span>$1/2$</span> rather than <code>1</code>.</p><p>Keep this factor of two in mind when comparing <code>TWA.jl</code> results with formulas or figures using spin-<span>$1/2$</span> operators.</p></div></div><h2 id="Simulation-times"><a class="docs-heading-anchor" href="#Simulation-times">Simulation times</a><a id="Simulation-times-1"></a><a class="docs-heading-anchor-permalink" href="#Simulation-times" title="Permalink"></a></h2><p>The time points stored in a simulation result are obtained with</p><pre><code class="language-julia hljs">ts = times(result)</code></pre><p>For example,</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    state,
+    DTWA(trajectories=1000);
+    tspan=(0.0, 4.0),
+    saveat=0.05,
+)
+
+ts = times(result)</code></pre><p>The returned observable arrays use these saved time points.</p><h2 id="Magnetization"><a class="docs-heading-anchor" href="#Magnetization">Magnetization</a><a id="Magnetization-1"></a><a class="docs-heading-anchor-permalink" href="#Magnetization" title="Permalink"></a></h2><p>The magnetization density along a Cartesian direction is represented by <code>Magnetization</code>.</p><p>For example,</p><pre><code class="language-julia hljs">mz = expectation(
+    result,
+    Magnetization(:z),
+)</code></pre><p>returns</p><p class="math-container">\[m_z(t)
+=
+\frac{1}{N}
+\sum_i
+\langle\sigma_i^z(t)\rangle.\]</p><p>Similarly,</p><pre><code class="language-julia hljs">mx = expectation(
+    result,
+    Magnetization(:x),
+)
+
+my = expectation(
+    result,
+    Magnetization(:y),
+)</code></pre><p>give the <span>$x$</span> and <span>$y$</span> magnetization densities.</p><p>A typical plotting workflow is</p><pre><code class="language-julia hljs">using CairoMakie
+
+ts = times(result)
+
+mz = expectation(
+    result,
+    Magnetization(:z),
+)
+
+fig = Figure()
+
+ax = Axis(
+    fig[1, 1],
+    xlabel=&quot;t&quot;,
+    ylabel=&quot;⟨Sᶻ⟩ / N&quot;,
+)
+
+lines!(
+    ax,
+    ts,
+    mz,
+)
+
+fig</code></pre><h2 id="Local-observables"><a class="docs-heading-anchor" href="#Local-observables">Local observables</a><a id="Local-observables-1"></a><a class="docs-heading-anchor-permalink" href="#Local-observables" title="Permalink"></a></h2><p>Global magnetization can hide spatial structure.</p><p>Local spin expectation values instead resolve individual physical sites,</p><p class="math-container">\[\langle\sigma_i^\alpha(t)\rangle.\]</p><p>This is particularly useful for inhomogeneous initial states such as</p><pre><code class="language-julia hljs">DomainWall()</code></pre><p>where transport and relaxation can be studied through the spatial magnetization profile.</p><p>The observable layer operates on <strong>physical spin sites</strong>, even for CTWA simulations. Users therefore do not need to convert cluster generators back into physical spin variables manually.</p><h2 id="Two-point-correlations"><a class="docs-heading-anchor" href="#Two-point-correlations">Two-point correlations</a><a id="Two-point-correlations-1"></a><a class="docs-heading-anchor-permalink" href="#Two-point-correlations" title="Permalink"></a></h2><p>Two-point spin correlations have the form</p><p class="math-container">\[C_{ij}^{\alpha\beta}(t)
+=
+\left\langle
+\sigma_i^\alpha(t)
+\sigma_j^\beta(t)
+\right\rangle.\]</p><p>They provide information that is not contained in single-spin magnetization alone.</p><p>For equal components,</p><p class="math-container">\[C_{ij}^{\alpha\alpha}
+=
+\langle
+\sigma_i^\alpha
+\sigma_j^\alpha
+\rangle.\]</p><p>For different components,</p><p class="math-container">\[C_{ij}^{\alpha\beta}
+=
+\langle
+\sigma_i^\alpha
+\sigma_j^\beta
+\rangle.\]</p><p>The same physical definition is used whether sites <span>$i$</span> and <span>$j$</span> lie inside the same CTWA cluster or in different clusters.</p><p>This is important because the clustering is an approximation detail, not part of the physical observable definition.</p><h2 id="Connected-correlations"><a class="docs-heading-anchor" href="#Connected-correlations">Connected correlations</a><a id="Connected-correlations-1"></a><a class="docs-heading-anchor-permalink" href="#Connected-correlations" title="Permalink"></a></h2><p>The connected two-point correlation subtracts the product of the one-point expectation values,</p><p class="math-container">\[C_{ij,\mathrm{conn}}^{\alpha\beta}
+=
+\langle
+\sigma_i^\alpha\sigma_j^\beta
+\rangle
+-
+\langle\sigma_i^\alpha\rangle
+\langle\sigma_j^\beta\rangle.\]</p><p>Connected correlations isolate correlations beyond the product of the local mean values.</p><p>For an initially uncorrelated product state, connected correlations typically vanish initially between different sites and can develop as the system evolves.</p><h2 id="Same-site-Pauli-products"><a class="docs-heading-anchor" href="#Same-site-Pauli-products">Same-site Pauli products</a><a id="Same-site-Pauli-products-1"></a><a class="docs-heading-anchor-permalink" href="#Same-site-Pauli-products" title="Permalink"></a></h2><p>Pauli matrices satisfy</p><p class="math-container">\[(\sigma_i^\alpha)^2 = I.\]</p><p>Therefore,</p><p class="math-container">\[\left\langle
+(\sigma_i^\alpha)^2
+\right\rangle
+=
+1\]</p><p>exactly.</p><p><code>TWA.jl</code> respects this operator identity when evaluating same-site, same-axis second moments.</p><p>This distinction matters because simply squaring a classical phase-space coordinate is not, in general, the correct quantum estimator for a same-site Pauli product.</p><p>For different Cartesian components on the same site,</p><p class="math-container">\[\sigma_i^\alpha\sigma_i^\beta
+=
+i\epsilon_{\alpha\beta\gamma}
+\sigma_i^\gamma,
+\qquad
+\alpha\neq\beta,\]</p><p>so operator ordering becomes relevant.</p><p>The observable API therefore does not silently interpret an ordered same-site, different-axis product as an ordinary product of commuting classical numbers.</p><h2 id="Collective-observables"><a class="docs-heading-anchor" href="#Collective-observables">Collective observables</a><a id="Collective-observables-1"></a><a class="docs-heading-anchor-permalink" href="#Collective-observables" title="Permalink"></a></h2><p>Define the collective Pauli operators</p><p class="math-container">\[S^\alpha
+=
+\sum_i\sigma_i^\alpha.\]</p><p>Their first moment is</p><p class="math-container">\[\langle S^\alpha\rangle
+=
+\sum_i
+\langle\sigma_i^\alpha\rangle.\]</p><p>The normalized magnetization used by <code>Magnetization</code> is</p><p class="math-container">\[\frac{\langle S^\alpha\rangle}{N}.\]</p><p>Collective second moments contain both local and nonlocal contributions,</p><p class="math-container">\[\left\langle
+(S^\alpha)^2
+\right\rangle
+=
+\sum_{i,j}
+\left\langle
+\sigma_i^\alpha\sigma_j^\alpha
+\right\rangle.\]</p><p>Using <span>$(\sigma_i^\alpha)^2=I$</span>,</p><p class="math-container">\[\left\langle
+(S^\alpha)^2
+\right\rangle
+=
+N
++
+\sum_{i\neq j}
+\left\langle
+\sigma_i^\alpha\sigma_j^\alpha
+\right\rangle.\]</p><p>Thus collective fluctuations depend directly on two-point correlations.</p><h2 id="Collective-variance"><a class="docs-heading-anchor" href="#Collective-variance">Collective variance</a><a id="Collective-variance-1"></a><a class="docs-heading-anchor-permalink" href="#Collective-variance" title="Permalink"></a></h2><p>The variance of a collective component is</p><p class="math-container">\[\operatorname{Var}(S^\alpha)
+=
+\left\langle
+(S^\alpha)^2
+\right\rangle
+-
+\left\langle
+S^\alpha
+\right\rangle^2.\]</p><p>Depending on the physical comparison, one may normalize this quantity by <span>$N$</span> or <span>$N^2$</span>.</p><p>For example,</p><p class="math-container">\[\frac{\operatorname{Var}(S^\alpha)}{N^2}\]</p><p>measures fluctuations relative to the square of the total system size.</p><p>When comparing against a paper or exact calculation, always check both the operator convention and the normalization.</p><h2 id="Mixed-collective-correlations"><a class="docs-heading-anchor" href="#Mixed-collective-correlations">Mixed collective correlations</a><a id="Mixed-collective-correlations-1"></a><a class="docs-heading-anchor-permalink" href="#Mixed-collective-correlations" title="Permalink"></a></h2><p>Mixed collective moments have the form</p><p class="math-container">\[\langle
+S^\alpha S^\beta
+\rangle
+=
+\sum_{i,j}
+\langle
+\sigma_i^\alpha\sigma_j^\beta
+\rangle.\]</p><p>For <span>$\alpha\neq\beta$</span>, these quantities can be complex because the corresponding quantum operators need not commute.</p><p>A frequently useful real quantity is the symmetrized correlation,</p><p class="math-container">\[\frac{1}{2}
+\left\langle
+S^\alpha S^\beta
++
+S^\beta S^\alpha
+\right\rangle,\]</p><p>which is equivalent to</p><p class="math-container">\[\operatorname{Re}
+\langle
+S^\alpha S^\beta
+\rangle\]</p><p>for Hermitian <span>$S^\alpha$</span> and <span>$S^\beta$</span>.</p><p>Such quantities appear naturally in collective-spin fluctuation and correlation benchmarks.</p><h2 id="Correlation-profiles"><a class="docs-heading-anchor" href="#Correlation-profiles">Correlation profiles</a><a id="Correlation-profiles-1"></a><a class="docs-heading-anchor-permalink" href="#Correlation-profiles" title="Permalink"></a></h2><p>For translational or approximately translational systems, it is often useful to organize two-point correlations by physical separation rather than by individual site pairs.</p><p>A correlation profile groups</p><p class="math-container">\[C_{ij}^{\alpha\beta}\]</p><p>according to the distance</p><p class="math-container">\[r = r_{ij}.\]</p><p>This provides a spatial picture of how correlations spread through the system.</p><p>The separation is determined from the physical geometry and therefore remains meaningful independently of the CTWA clustering.</p><h2 id="Structure-factors"><a class="docs-heading-anchor" href="#Structure-factors">Structure factors</a><a id="Structure-factors-1"></a><a class="docs-heading-anchor-permalink" href="#Structure-factors" title="Permalink"></a></h2><p>Spatial correlations can also be studied in momentum space through structure factors.</p><p>A generic spin structure factor has the form</p><p class="math-container">\[S^{\alpha\beta}(q)
+=
+\frac{1}{N}
+\sum_{i,j}
+e^{iq(r_i-r_j)}
+\left\langle
+\sigma_i^\alpha
+\sigma_j^\beta
+\right\rangle.\]</p><p>Connected structure factors can similarly be constructed from connected correlations.</p><p>Structure factors are useful for identifying characteristic spatial wavevectors and ordering patterns that may not be apparent from global magnetization alone.</p><h2 id="Physical-sites-versus-CTWA-clusters"><a class="docs-heading-anchor" href="#Physical-sites-versus-CTWA-clusters">Physical sites versus CTWA clusters</a><a id="Physical-sites-versus-CTWA-clusters-1"></a><a class="docs-heading-anchor-permalink" href="#Physical-sites-versus-CTWA-clusters" title="Permalink"></a></h2><p>One of the goals of the observable API is to hide the internal cluster representation.</p><p>Suppose a CTWA calculation uses</p><pre><code class="language-julia hljs">CTWA(
+    cluster_size=4,
+    trajectories=1000,
+    sampling=DiscreteSampling(),
+)</code></pre><p>Internally, each cluster evolves <span>$4^4-1=255$</span> phase-space coordinates.</p><p>Nevertheless, physical observables are still expressed in terms of</p><p class="math-container">\[\sigma_i^\alpha\]</p><p>on the original physical sites.</p><p>Conceptually,</p><pre><code class="language-text hljs">CTWA cluster coordinates
+          │
+          ▼
+ physical Pauli operators
+          │
+          ▼
+   correlations / moments
+          │
+          ▼
+    user observables</code></pre><p>The cluster basis is therefore an implementation of the approximation, not a replacement for the physical observable language.</p><h2 id="Statistical-convergence"><a class="docs-heading-anchor" href="#Statistical-convergence">Statistical convergence</a><a id="Statistical-convergence-1"></a><a class="docs-heading-anchor-permalink" href="#Statistical-convergence" title="Permalink"></a></h2><p>DTWA and CTWA observables are Monte Carlo estimates.</p><p>For an observable <span>$O$</span>,</p><p class="math-container">\[\langle O(t)\rangle
+\approx
+\frac{1}{M}
+\sum_{m=1}^{M}
+O_m(t),\]</p><p>where <span>$M$</span> is the number of trajectories.</p><p>Increasing</p><pre><code class="language-julia hljs">trajectories=M</code></pre><p>reduces statistical sampling noise.</p><p>Observable convergence should therefore be checked with respect to trajectory number, especially for correlation functions and higher moments, which can require more samples than simple magnetization observables.</p><p>For CTWA, trajectory convergence and cluster-size convergence are separate questions.</p><h2 id="Example-workflow"><a class="docs-heading-anchor" href="#Example-workflow">Example workflow</a><a id="Example-workflow-1"></a><a class="docs-heading-anchor-permalink" href="#Example-workflow" title="Permalink"></a></h2><p>A typical analysis has the form</p><pre><code class="language-julia hljs">using TWA
+
+model = SpinModel(
+    Chain(100),
+    PowerLaw(
+        Ising(:x; J=1.0);
+        α=3.0,
+    ),
+)
+
+result = simulate(
+    model,
+    Up(),
+    DTWA(
+        trajectories=1000,
+    );
+    tspan=(0.0, 4.0),
+    saveat=0.05,
+)
+
+ts = times(result)
+
+mz = expectation(
+    result,
+    Magnetization(:z),
+)</code></pre><p>The same observable call can be used after changing the approximation:</p><pre><code class="language-julia hljs">result = simulate(
+    model,
+    Up(),
+    CTWA(
+        cluster_size=2,
+        trajectories=1000,
+        sampling=DiscreteSampling(),
+    );
+    tspan=(0.0, 4.0),
+    saveat=0.05,
+)
+
+mz = expectation(
+    result,
+    Magnetization(:z),
+)</code></pre><p>This makes comparisons between DTWA and CTWA possible without changing the physical observable definition.</p><h2 id="Next-steps"><a class="docs-heading-anchor" href="#Next-steps">Next steps</a><a id="Next-steps-1"></a><a class="docs-heading-anchor-permalink" href="#Next-steps" title="Permalink"></a></h2><p>See the <a href="../../examples/long_range_ising/">Long-range Ising benchmark</a> for a comparison of exact dynamics, TWA, DTWA, gcTWA, and dcTWA.</p><p>For constructors and the complete public observable interface, see the <a href="../../api/">API Reference</a>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../ctwa/">« CTWA</a><a class="docs-footer-nextpage" href="../../examples/long_range_ising/">Long-range Ising »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Tuesday 1 September 2026 21:05">Tuesday 1 September 2026</span>. Using Julia version 1.12.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
