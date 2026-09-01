@@ -146,17 +146,12 @@ Chain(100, PeriodicBoundary())
 
 The Hamiltonian convention uses Pauli matrices directly:
 
-$$
-H =\sum_{i<j}
-\left( J^x_{ij}\sigma_i^x\sigma_j^x +
-J^y_{ij}\sigma_i^y\sigma_j^y +
-J^z_{ij}\sigma_i^z\sigma_j^z
-\right)
-+ \sum_i \mathbf h_i\cdot\boldsymbol{\sigma}_i.
-$$
+```math
+$$H =\sum_{i<j}\left( J^x_{ij}\sigma_i^x\sigma_j^x +J^y_{ij}\sigma_i^y\sigma_j^y +J^z_{ij}\sigma_i^z\sigma_j^z\right)+ \sum_i \mathbf h_i\cdot\boldsymbol{\sigma}_i.$$
 
 In particular, TWA.jl uses `σ`, not the convention
 `S = σ/2`.
+```
 
 ## Initial states
 
