@@ -1,3 +1,5 @@
+
+
 """
     AbstractGeometry
 
@@ -45,6 +47,25 @@ a two-site periodic chain contains only the bond `(1,2)`, not both
 struct PeriodicBoundary <: AbstractBoundaryCondition end
 
 
+
+
+
+"""
+    nsites(geometry)
+
+Return the number of physical sites in a geometry.
+
+All concrete geometries used by `TWA.jl` should implement this interface.
+"""
+nsites(geometry::AbstractGeometry) =
+    throw(MethodError(nsites, (geometry,)))
+
+
+
+
+
+
+
 """
     Chain(nsites)
     Chain(nsites, boundary)
@@ -79,6 +100,104 @@ struct Chain{B<:AbstractBoundaryCondition} <: AbstractGeometry
         new{B}(Int(nsites), boundary)
     end
 end
+
+
+
+
+
+"""
+    nsites(chain::Chain)
+
+Return the number of sites in a one-dimensional chain.
+"""
+nsites(chain::Chain) = chain.nsites
+
+
+
+
+"""
+    SquareLattice(Lx, Ly)
+    SquareLattice(Lx, Ly, boundary)
+
+Two-dimensional square lattice with dimensions `Lx × Ly`.
+
+Sites are numbered in row-major order,
+
+```text
+1        2        ...      Lx
+Lx + 1   Lx + 2   ...      2Lx
+...
+
+(Ly - 1)Lx + 1  ...      LxLy
+```
+
+The total number of physical sites is Lx * Ly.
+Arguments
+Lx: Number of sites along the x direction. Must be positive.
+Ly: Number of sites along the y direction. Must be positive.
+boundary: Boundary condition. Defaults to OpenBoundary.
+
+
+Examples
+SquareLattice(4, 3)
+SquareLattice(4, 3, PeriodicBoundary())
+
+
+"""
+struct SquareLattice{B<:AbstractBoundaryCondition} <: AbstractGeometry
+    Lx::Int
+    Ly::Int
+    boundary::B
+    function SquareLattice(
+        Lx::Integer,
+        Ly::Integer,
+        boundary::B = OpenBoundary(),
+    ) where {B<:AbstractBoundaryCondition}
+
+        Lx > 0 || throw(ArgumentError("Lx must be positive"))
+        Ly > 0 || throw(ArgumentError("Ly must be positive"))
+
+        new{B}(Int(Lx), Int(Ly), boundary)
+    end
+end
+"""
+nsites(lattice::SquareLattice)
+Return the total number of physical sites in a square lattice.
+"""
+nsites(lattice::SquareLattice) = lattice.Lx * lattice.Ly
+
+"""
+coordinates(lattice::SquareLattice, site)
+Return the integer lattice coordinates (x, y) associated with site.
+Sites are numbered in row-major order.
+"""
+function coordinates(
+    lattice::SquareLattice,
+    site::Integer,
+    )
+    _check_site(lattice, site)
+    s = Int(site) - 1
+
+    x = mod(s, lattice.Lx) + 1
+    y = div(s, lattice.Lx) + 1
+
+    return (x, y)
+end
+
+
+
+@inline function _check_site(
+    lattice::SquareLattice,
+    site::Integer,
+)
+    N = nsites(lattice)
+
+    1 <= site <= N ||
+        throw(BoundsError(1:N, site))
+
+    return nothing
+end
+
 
 
 """
@@ -250,4 +369,147 @@ future geometry operations can reuse the same bounds checking.
     1 <= i <= chain.nsites ||
     throw(BoundsError(1:chain.nsites, i))
     return nothing
+end
+
+
+
+
+
+
+struct SquareLatticeBonds{B<:AbstractBoundaryCondition}
+    lattice::SquareLattice{B}
+end
+
+bonds(lattice::SquareLattice) = SquareLatticeBonds(lattice)
+
+Base.IteratorSize(::Type{<:SquareLatticeBonds}) = Base.HasLength()
+Base.eltype(::Type{<:SquareLatticeBonds}) = Tuple{Int,Int}
+
+
+@inline function _site_index(
+    lattice::SquareLattice,
+    x::Integer,
+    y::Integer,
+)
+    return (Int(y) - 1) * lattice.Lx + Int(x)
+end
+
+
+function bonds(lattice::SquareLattice{OpenBoundary})
+    Lx = lattice.Lx
+    Ly = lattice.Ly
+
+    result = Tuple{Int,Int}[]
+
+    sizehint!(
+        result,
+        max(Lx - 1, 0) * Ly +
+        Lx * max(Ly - 1, 0),
+    )
+
+    for y in 1:Ly
+        for x in 1:Lx
+            i = _site_index(lattice, x, y)
+
+            if x < Lx
+                push!(
+                    result,
+                    (i, _site_index(lattice, x + 1, y)),
+                )
+            end
+
+            if y < Ly
+                push!(
+                    result,
+                    (i, _site_index(lattice, x, y + 1)),
+                )
+            end
+        end
+    end
+
+    return result
+end
+
+
+function bonds(lattice::SquareLattice{PeriodicBoundary})
+    Lx = lattice.Lx
+    Ly = lattice.Ly
+
+    result = Tuple{Int,Int}[]
+
+    for y in 1:Ly
+        for x in 1:Lx
+            i = _site_index(lattice, x, y)
+
+            # +x direction
+            if Lx > 1
+                xp = x == Lx ? 1 : x + 1
+                j = _site_index(lattice, xp, y)
+
+                if i < j || Lx > 2
+                    push!(result, (i, j))
+                end
+            end
+
+            # +y direction
+            if Ly > 1
+                yp = y == Ly ? 1 : y + 1
+                j = _site_index(lattice, x, yp)
+
+                if i < j || Ly > 2
+                    push!(result, (i, j))
+                end
+            end
+        end
+    end
+
+    return result
+end
+
+
+
+"""
+    distance(lattice::SquareLattice, i::Integer, j::Integer)
+
+Return the Euclidean lattice distance between sites `i` and `j`.
+
+For periodic boundaries, the minimum-image displacement is used
+independently along the x and y directions.
+"""
+function distance(
+    lattice::SquareLattice{OpenBoundary},
+    i::Integer,
+    j::Integer,
+)
+    _check_site(lattice, i)
+    _check_site(lattice, j)
+
+    xi, yi = coordinates(lattice, i)
+    xj, yj = coordinates(lattice, j)
+
+    dx = abs(xi - xj)
+    dy = abs(yi - yj)
+
+    return hypot(dx, dy)
+end
+
+
+function distance(
+    lattice::SquareLattice{PeriodicBoundary},
+    i::Integer,
+    j::Integer,
+)
+    _check_site(lattice, i)
+    _check_site(lattice, j)
+
+    xi, yi = coordinates(lattice, i)
+    xj, yj = coordinates(lattice, j)
+
+    dx = abs(xi - xj)
+    dy = abs(yi - yj)
+
+    dx = min(dx, lattice.Lx - dx)
+    dy = min(dy, lattice.Ly - dy)
+
+    return hypot(dx, dy)
 end

@@ -47,12 +47,12 @@ Convenience overload using the number of sites stored in a `Chain`.
 """
 function sample_dtwa(
     state::AbstractState,
-    chain::Chain;
+    geometry::AbstractGeometry;
     kwargs...,
 )
     return sample_dtwa(
         state,
-        chain.nsites;
+        nsites(geometry);
         kwargs...,
     )
 end

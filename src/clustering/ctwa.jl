@@ -1,83 +1,254 @@
+
+
 """
     Clustering(nsites, cluster_size)
+    Clustering(nsites, sites)
 
-Contiguous, equal-size partition of a one-dimensional spin system into CTWA
-clusters.
+Equal-size partition of a spin system into CTWA clusters.
 
-The first implementation is intentionally strict:
+A clustering stores an ordered collection of physical sites for each cluster.
+The physical site indices do not need to be consecutive.
 
-- clusters are contiguous;
-- every cluster has exactly `cluster_size` sites;
-- `nsites` must be divisible by `cluster_size`.
+`Clustering(nsites, cluster_size)` preserves the traditional contiguous
+site-index partition.
 
-For example,
+More general cluster layouts can be specified by supplying a matrix whose
+columns are clusters and whose rows are local positions within each cluster.
 
-    Clustering(6, 2)
-
-defines
-
-    C₁ = (1, 2)
-    C₂ = (3, 4)
-    C₃ = (5, 6).
-
-This object is purely geometric/bookkeeping information. It does not contain a
-Pauli basis or Hamiltonian coefficients.
+Every physical site in `1:nsites` must occur exactly once, and all clusters
+must have equal size.
 """
 struct Clustering
     nsites::Int
     cluster_size::Int
     nclusters::Int
 
+    sites::Matrix{Int}
+    site_to_cluster::Vector{Int}
+    site_to_position::Vector{Int}
+
     function Clustering(
         nsites::Integer,
-        cluster_size::Integer,
+        sites::AbstractMatrix{<:Integer},
     )
         nsites > 0 ||
             throw(ArgumentError(
                 "nsites must be positive; got $nsites",
             ))
 
-        cluster_size > 0 ||
-            throw(ArgumentError(
-                "cluster_size must be positive; got $cluster_size",
-            ))
-
-        cluster_size <= nsites ||
-            throw(ArgumentError(
-                "cluster_size must not exceed nsites; got " *
-                "cluster_size=$cluster_size, nsites=$nsites",
-            ))
-
-        nsites % cluster_size == 0 ||
-            throw(ArgumentError(
-                "nsites must be divisible by cluster_size for equal-size " *
-                "clustering; got nsites=$nsites, cluster_size=$cluster_size",
-            ))
-
         n = Int(nsites)
-        k = Int(cluster_size)
+        k = size(sites, 1)
+        nc = size(sites, 2)
+
+        k > 0 ||
+            throw(ArgumentError(
+                "clusters must contain at least one site",
+            ))
+
+        nc > 0 ||
+            throw(ArgumentError(
+                "at least one cluster is required",
+            ))
+
+        length(sites) == n ||
+            throw(ArgumentError(
+                "clustering must contain exactly nsites=$n physical sites; " *
+                "got $(length(sites)) entries",
+            ))
+
+        stored_sites = Matrix{Int}(sites)
+        site_to_cluster = zeros(Int, n)
+        site_to_position = zeros(Int, n)
+        seen = falses(n)
+
+        for cluster in 1:nc
+            for position in 1:k
+                site = stored_sites[position, cluster]
+
+                1 <= site <= n ||
+                    throw(ArgumentError(
+                        "physical site $site lies outside 1:$n",
+                    ))
+
+                !seen[site] ||
+                    throw(ArgumentError(
+                        "physical site $site appears more than once",
+                    ))
+
+                seen[site] = true
+                site_to_cluster[site] = cluster
+                site_to_position[site] = position
+            end
+        end
+
+        all(seen) ||
+            throw(ArgumentError(
+                "every physical site in 1:$n must appear exactly once",
+            ))
 
         new(
             n,
             k,
-            n ÷ k,
+            nc,
+            stored_sites,
+            site_to_cluster,
+            site_to_position,
         )
     end
 end
 
 
-"""
-    Clustering(chain, cluster_size)
+function Clustering(
+    nsites::Integer,
+    cluster_size::Integer,
+)
+    nsites > 0 ||
+        throw(ArgumentError(
+            "nsites must be positive; got $nsites",
+        ))
 
-Construct a contiguous equal-size clustering from a `Chain`.
-"""
+    cluster_size > 0 ||
+        throw(ArgumentError(
+            "cluster_size must be positive; got $cluster_size",
+        ))
+
+    cluster_size <= nsites ||
+        throw(ArgumentError(
+            "cluster_size must not exceed nsites; got " *
+            "cluster_size=$cluster_size, nsites=$nsites",
+        ))
+
+    nsites % cluster_size == 0 ||
+        throw(ArgumentError(
+            "nsites must be divisible by cluster_size for equal-size " *
+            "clustering; got nsites=$nsites, cluster_size=$cluster_size",
+        ))
+
+    n = Int(nsites)
+    k = Int(cluster_size)
+
+    sites = reshape(
+        collect(1:n),
+        k,
+        n ÷ k,
+    )
+
+    return Clustering(n, sites)
+end
+
+
 Clustering(
-    chain::Chain,
+    geometry::AbstractGeometry,
     cluster_size::Integer,
 ) = Clustering(
-    chain.nsites,
+    nsites(geometry),
     cluster_size,
 )
+
+
+
+
+"""
+    Clustering(lattice::SquareLattice, block_shape)
+
+Construct a spatially compact rectangular CTWA clustering of a square lattice.
+
+`block_shape = (bx, by)` specifies the number of lattice sites along the
+x and y directions within each cluster.
+
+Both lattice dimensions must be divisible by the corresponding block
+dimensions.
+
+For example,
+
+    Clustering(SquareLattice(4, 4), (2, 2))
+
+produces the clusters
+
+    (1, 2, 5, 6)
+    (3, 4, 7, 8)
+    (9, 10, 13, 14)
+    (11, 12, 15, 16)
+
+for the row-major site ordering of `SquareLattice`.
+"""
+function Clustering(
+    lattice::SquareLattice,
+    block_shape::Tuple{<:Integer,<:Integer},
+)
+    bx = Int(block_shape[1])
+    by = Int(block_shape[2])
+
+    bx > 0 ||
+        throw(ArgumentError(
+            "block size along x must be positive; got $bx",
+        ))
+
+    by > 0 ||
+        throw(ArgumentError(
+            "block size along y must be positive; got $by",
+        ))
+
+    lattice.Lx % bx == 0 ||
+        throw(ArgumentError(
+            "lattice size Lx=$(lattice.Lx) must be divisible by bx=$bx",
+        ))
+
+    lattice.Ly % by == 0 ||
+        throw(ArgumentError(
+            "lattice size Ly=$(lattice.Ly) must be divisible by by=$by",
+        ))
+
+    cluster_size = bx * by
+
+    nclusters_x = lattice.Lx ÷ bx
+    nclusters_y = lattice.Ly ÷ by
+    nclusters = nclusters_x * nclusters_y
+
+    sites =
+        Matrix{Int}(
+            undef,
+            cluster_size,
+            nclusters,
+        )
+
+    cluster = 0
+
+    for block_y in 0:(nclusters_y - 1)
+        for block_x in 0:(nclusters_x - 1)
+            cluster += 1
+            position = 0
+
+            for local_y in 1:by
+                for local_x in 1:bx
+                    position += 1
+
+                    x =
+                        block_x * bx +
+                        local_x
+
+                    y =
+                        block_y * by +
+                        local_y
+
+                    site =
+                        (y - 1) * lattice.Lx +
+                        x
+
+                    sites[
+                        position,
+                        cluster,
+                    ] = site
+                end
+            end
+        end
+    end
+
+    return Clustering(
+        nsites(lattice),
+        sites,
+    )
+end
 
 
 """
@@ -95,19 +266,7 @@ Base.length(
 ) = clustering.nclusters
 
 
-"""
-    cluster_sites(clustering, cluster)
 
-Return the physical site range belonging to one cluster.
-
-For example, with `Clustering(6, 2)`:
-
-    cluster_sites(clustering, 1) == 1:2
-    cluster_sites(clustering, 2) == 3:4
-    cluster_sites(clustering, 3) == 5:6
-
-The returned `UnitRange` is allocation-free and can be iterated directly.
-"""
 function cluster_sites(
     clustering::Clustering,
     cluster::Integer,
@@ -117,25 +276,10 @@ function cluster_sites(
         cluster,
     )
 
-    first_site =
-        (Int(cluster) - 1) *
-        clustering.cluster_size +
-        1
-
-    last_site =
-        first_site +
-        clustering.cluster_size -
-        1
-
-    return first_site:last_site
+    return @view clustering.sites[:, Int(cluster)]
 end
 
 
-"""
-    site_cluster(clustering, site)
-
-Return the cluster index containing physical `site`.
-"""
 function site_cluster(
     clustering::Clustering,
     site::Integer,
@@ -145,27 +289,10 @@ function site_cluster(
         site,
     )
 
-    return fld(
-        Int(site) - 1,
-        clustering.cluster_size,
-    ) + 1
+    return clustering.site_to_cluster[Int(site)]
 end
 
 
-"""
-    site_position(clustering, site)
-
-Return the local position of physical `site` inside its cluster.
-
-The position is in `1:cluster_size`.
-
-For `Clustering(6, 2)`:
-
-    site_position(clustering, 1) == 1
-    site_position(clustering, 2) == 2
-    site_position(clustering, 3) == 1
-    site_position(clustering, 4) == 2
-"""
 function site_position(
     clustering::Clustering,
     site::Integer,
@@ -175,18 +302,10 @@ function site_position(
         site,
     )
 
-    return mod(
-        Int(site) - 1,
-        clustering.cluster_size,
-    ) + 1
+    return clustering.site_to_position[Int(site)]
 end
 
 
-"""
-    site_cluster_position(clustering, site)
-
-Return `(cluster, position)` for a physical site.
-"""
 function site_cluster_position(
     clustering::Clustering,
     site::Integer,
@@ -196,23 +315,11 @@ function site_cluster_position(
         site,
     )
 
-    zero_based_site = Int(site) - 1
-
-    cluster =
-        fld(
-            zero_based_site,
-            clustering.cluster_size,
-        ) + 1
-
-    position =
-        mod(
-            zero_based_site,
-            clustering.cluster_size,
-        ) + 1
+    s = Int(site)
 
     return (
-        cluster,
-        position,
+        clustering.site_to_cluster[s],
+        clustering.site_to_position[s],
     )
 end
 

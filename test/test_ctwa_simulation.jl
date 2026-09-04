@@ -293,3 +293,64 @@
         )
     end
 end
+
+
+
+
+@testset "2D CTWA simulation with spatial clustering" begin
+    lattice = SquareLattice(2, 2)
+
+    clustering =
+        Clustering(
+            lattice,
+            (2, 2),
+        )
+
+    model =
+        SpinModel(
+            lattice,
+            XXZ(
+                J=0.5,
+                Δ=1.0,
+            ),
+        )
+
+    state = Down()
+
+    method =
+        CTWA(
+            clustering=clustering,
+            trajectories=2,
+        )
+
+    result =
+        simulate(
+            model,
+            state,
+            method;
+            tspan=(0.0, 0.1),
+            saveat=0.05,
+        )
+
+    @test result isa CTWAResult
+    @test times(result) ≈ [0.0, 0.05, 0.1]
+    @test ntrajectories(result) == 2
+
+    @test result.clustering.cluster_size == 4
+
+    @test collect(
+        cluster_sites(
+            result.clustering,
+            1,
+        ),
+    ) == [1, 2, 3, 4]
+
+
+    mz =
+    expectation(
+        result,
+        Magnetization(:z),
+    )
+
+    @test all(isfinite, mz)
+end

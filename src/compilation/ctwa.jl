@@ -27,11 +27,11 @@ end
 """
     compile(model, state, method::CTWA; T=Float64)
 
-Compile a model, product initial state, and CTWA approximation into the sparse
-representation used by CTWA trajectories.
+CTWA currently requires equal-size clusters. When no explicit clustering is
+provided, clusters are formed from the canonical site ordering of the model
+geometry. An explicit `Clustering` may be supplied through `CTWA` for
+geometry-aware spatial cluster layouts.
 
-The current clustering implementation requires equal-size contiguous clusters,
-so the number of physical sites must be divisible by `method.cluster_size`.
 """
 function compile(
     model::SpinModel,
@@ -40,10 +40,20 @@ function compile(
     T::Type{<:AbstractFloat}=Float64,
 )
     clustering =
-        Clustering(
-            geometry(model),
-            method.cluster_size,
-        )
+        if method.clustering === nothing
+            Clustering(
+                geometry(model),
+                method.cluster_size,
+            )
+        else
+            method.clustering
+        end
+
+    clustering.nsites == nsites(geometry(model)) ||
+        throw(ArgumentError(
+            "explicit clustering contains $(clustering.nsites) sites, " *
+            "but model geometry contains $(nsites(geometry(model))) sites",
+        ))
 
     hamiltonian =
         compile_ctwa_hamiltonian(

@@ -46,9 +46,8 @@ times(result::AbstractSimulationResult) =
 Return the number of DTWA trajectories stored in a result.
 """
 ntrajectories(
-    result::DTWAResult,
+    result::AbstractSimulationResult,
 ) = size(result.trajectories, 4)
-
 
 """
     trajectory(result, trajectory_index)

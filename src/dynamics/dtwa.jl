@@ -42,9 +42,10 @@ function dtwa_rhs!(
     model::SpinModel,
     t,
 )
-    nsites = model.geometry.nsites
+    N = nsites(model.geometry)
+    
 
-    _check_dtwa_dynamics_layout(du, u, nsites)
+    _check_dtwa_dynamics_layout(du, u, N)
 
     fill!(du, zero(eltype(du)))
 
@@ -54,7 +55,7 @@ function dtwa_rhs!(
     #
     #     ds/dt = 2 h × s
     #
-    @inbounds for i in 1:nsites
+    @inbounds for i in 1:N
         sx = u[i, 1]
         sy = u[i, 2]
         sz = u[i, 3]
@@ -67,12 +68,12 @@ function dtwa_rhs!(
     # Pair contribution. Each unordered pair is visited exactly once.
     # Updating both sites in the same loop avoids allocating a separate
     # effective-field array.
-    @inbounds for i in 1:(nsites - 1)
+    @inbounds for i in 1:(N - 1)
         six = u[i, 1]
         siy = u[i, 2]
         siz = u[i, 3]
 
-        for j in (i + 1):nsites
+        for j in (i + 1):N
             Jx, Jy, Jz = coupling_components(
                 model,
                 i,

@@ -4,6 +4,9 @@ import Random
 
 export Chain
 export OpenBoundary, PeriodicBoundary
+export nsites
+export SquareLattice
+export coordinates
 export bonds, distance
 
 export XXZ, Ising, NearestNeighbor, PowerLaw

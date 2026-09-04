@@ -72,13 +72,13 @@ function simulate(
         T=T,
     )
 
-    nsites = model.geometry.nsites
+    N = nsites(model.geometry)
     ntimes = length(output_times)
     ntraj = method.trajectories
 
     values = Array{T,4}(
         undef,
-        nsites,
+        N,
         3,
         ntimes,
         ntraj,
