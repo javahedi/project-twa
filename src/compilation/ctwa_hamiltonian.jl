@@ -109,9 +109,9 @@ function compile_ctwa_hamiltonian(
     clustering::Clustering;
     T::Type{<:Real}=Float64,
 )
-    model.geometry.nsites == clustering.nsites ||
+    nsites(model.geometry) == clustering.nsites ||
         throw(DimensionMismatch(
-            "model has $(model.geometry.nsites) sites but clustering has " *
+            "model has $(nsites(model.geometry)) sites but clustering has " *
             "$(clustering.nsites)",
         ))
 

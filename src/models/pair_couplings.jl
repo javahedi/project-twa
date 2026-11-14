@@ -168,7 +168,7 @@ end
 # ---------------------------------------------------------------------------
 
 @inline function _coupling_strength(
-    geometry::Chain,
+    geometry::AbstractGeometry,
     profile::NearestNeighbor,
     i::Integer,
     j::Integer,
@@ -182,7 +182,7 @@ end
 
 
 @inline function _coupling_components(
-    geometry::Chain,
+    geometry::AbstractGeometry,
     profile::NearestNeighbor{<:XXZ},
     i::Integer,
     j::Integer,
@@ -212,7 +212,7 @@ end
 
 
 @inline function _coupling_components(
-    geometry::Chain,
+    geometry::AbstractGeometry,
     profile::NearestNeighbor{<:Ising},
     i::Integer,
     j::Integer,
@@ -249,7 +249,7 @@ end
 # ---------------------------------------------------------------------------
 
 @inline function _coupling_strength(
-    geometry::Chain,
+    geometry::AbstractGeometry,
     profile::PowerLaw,
     i::Integer,
     j::Integer,
@@ -268,7 +268,7 @@ end
 
 
 @inline function _coupling_components(
-    geometry::Chain,
+    geometry::AbstractGeometry,
     profile::PowerLaw{<:XXZ},
     i::Integer,
     j::Integer,
@@ -301,7 +301,7 @@ end
 
 
 @inline function _coupling_components(
-    geometry::Chain,
+    geometry::AbstractGeometry,
     profile::PowerLaw{<:Ising},
     i::Integer,
     j::Integer,

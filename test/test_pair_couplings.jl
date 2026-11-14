@@ -84,6 +84,84 @@
     end
 
 
+    @testset "Power-law XXZ on open square lattice" begin
+        # 4×3 lattice, row-major numbering: site = x + (y - 1) * Lx.
+        model = SpinModel(
+            SquareLattice(4, 3),
+            PowerLaw(
+                XXZ(J=2.0, Δ=0.5);
+                α=2.0,
+            ),
+        )
+
+        # (1,1)–(2,1): horizontal neighbor, r = 1.
+        @test coupling_strength(model, 1, 2) == 1.0
+
+        # (1,1)–(1,2): vertical neighbor, r = 1.
+        @test coupling_strength(model, 1, 5) == 1.0
+
+        # (1,1)–(2,2): diagonal, r² = 2.
+        @test coupling_strength(model, 1, 6) ≈ 1 / 2
+
+        # (1,1)–(4,3): r² = 3² + 2² = 13, no wrapping.
+        @test coupling_strength(model, 1, 12) ≈ 1 / 13
+
+        @test coupling_strength(model, 3, 3) == 0.0
+
+        Jx, Jy, Jz = coupling_components(model, 1, 6)
+        @test Jx ≈ 1.0
+        @test Jy ≈ 1.0
+        @test Jz ≈ 0.5
+    end
+
+
+    @testset "Power-law on periodic square lattice" begin
+        model = SpinModel(
+            SquareLattice(4, 4, PeriodicBoundary()),
+            PowerLaw(
+                XXZ(J=1.0, Δ=1.0);
+                α=2.0,
+            ),
+        )
+
+        # (1,1)–(4,1): nearest across the x boundary.
+        @test coupling_strength(model, 1, 4) == 1.0
+
+        # (1,1)–(1,4): nearest across the y boundary.
+        @test coupling_strength(model, 1, 13) == 1.0
+
+        # (1,1)–(4,4): diagonal across both boundaries, r² = 2.
+        @test coupling_strength(model, 1, 16) ≈ 1 / 2
+
+        # (1,1)–(3,3): maximal minimum-image separation, r² = 8.
+        @test coupling_strength(model, 1, 11) ≈ 1 / 8
+
+        @test coupling_strength(model, 6, 16) ==
+              coupling_strength(model, 16, 6)
+    end
+
+
+    @testset "Power-law Ising on square lattice" begin
+        model = SpinModel(
+            SquareLattice(3, 3, PeriodicBoundary()),
+            PowerLaw(
+                Ising(:z; J=1.5);
+                α=6.0,
+            ),
+        )
+
+        @test coupling_components(model, 1, 2) == (0.0, 0.0, 1.5)
+
+        # Diagonal, r⁶ = 8.
+        Jx, Jy, Jz = coupling_components(model, 1, 5)
+        @test Jx == 0.0
+        @test Jy == 0.0
+        @test Jz ≈ 1.5 / 8
+
+        @test coupling_components(model, 4, 4) == (0.0, 0.0, 0.0)
+    end
+
+
     @testset "Symmetry" begin
         model = SpinModel(
             Chain(8, PeriodicBoundary()),

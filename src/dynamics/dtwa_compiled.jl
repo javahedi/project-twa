@@ -44,7 +44,7 @@ function compile(
     model::SpinModel,
     ::DTWA,
 )
-    nsites = model.geometry.nsites
+    N = nsites(model.geometry)
 
     field = _promoted_model_field_components(model)
     pairs = _compile_dtwa_pairs(model)
@@ -71,7 +71,7 @@ function compile(
     end
 
     return CompiledDTWA(
-        nsites,
+        N,
         typed_field,
         typed_pairs,
     )
@@ -92,19 +92,19 @@ function dtwa_rhs!(
     compiled::CompiledDTWA,
     t,
 )
-    nsites = compiled.nsites
+    N = compiled.nsites
 
     _check_dtwa_dynamics_layout(
         du,
         u,
-        nsites,
+        N,
     )
 
     fill!(du, zero(eltype(du)))
 
     hx, hy, hz = compiled.field
 
-    @inbounds for i in 1:nsites
+    @inbounds for i in 1:N
         sx = u[i, 1]
         sy = u[i, 2]
         sz = u[i, 3]
@@ -154,12 +154,12 @@ Return an immutable tuple containing only nonzero pair couplings.
 function _compile_dtwa_pairs(
     model::SpinModel,
 )
-    nsites = model.geometry.nsites
+    N = nsites(model.geometry)
 
     pairs = Tuple[]
 
-    for i in 1:(nsites - 1)
-        for j in (i + 1):nsites
+    for i in 1:(N - 1)
+        for j in (i + 1):N
             Jx, Jy, Jz = coupling_components(
                 model,
                 i,

@@ -62,42 +62,82 @@ struct DiscreteSampling <: AbstractCTWASampling end
     CTWA(; cluster_size=2, trajectories=1000,
            sampling=DiscreteSampling())
 
+    CTWA(; clustering, trajectories=1000,
+           sampling=DiscreteSampling())
+
 Cluster truncated-Wigner approximation configuration.
 
-`cluster_size` controls the number of physical spin-1/2 sites grouped into
-each CTWA cluster. A cluster of size `n` has `4^n - 1` traceless Pauli-string
-phase-space coordinates.
+`cluster_size` selects the number of physical spin-1/2 sites per cluster using
+the default clustering associated with the model geometry.
 
-`trajectories` is the number of independently sampled classical trajectories.
+Alternatively, `clustering` may be supplied explicitly to specify the physical
+site membership of every cluster. This is useful for spatially compact
+clusters in multidimensional geometries.
+
+A cluster of size `n` has `4^n - 1` traceless Pauli-string phase-space
+coordinates.
 
 `sampling` selects the initial cluster phase-space sampling prescription.
-The default is [`DiscreteSampling`](@ref). Use [`GaussianSampling`](@ref)
-for Gaussian cluster sampling.
+The default is [`DiscreteSampling`](@ref).
 """
-struct CTWA{S<:AbstractCTWASampling} <: AbstractApproximation
+struct CTWA{
+    S<:AbstractCTWASampling,
+    C,
+} <: AbstractApproximation
     cluster_size::Int
     trajectories::Int
     sampling::S
+    clustering::C
 
     function CTWA(;
-        cluster_size::Integer=2,
+        cluster_size::Union{Nothing,Integer}=nothing,
+        clustering::Union{Nothing,Clustering}=nothing,
         trajectories::Integer=1000,
         sampling::AbstractCTWASampling=DiscreteSampling(),
     )
-        cluster_size > 0 ||
-            throw(ArgumentError(
-                "cluster_size must be positive",
-            ))
-
         trajectories > 0 ||
             throw(ArgumentError(
                 "trajectories must be positive",
             ))
 
-        new{typeof(sampling)}(
-            Int(cluster_size),
+        if clustering === nothing
+            k =
+                cluster_size === nothing ?
+                2 :
+                Int(cluster_size)
+
+            k > 0 ||
+                throw(ArgumentError(
+                    "cluster_size must be positive",
+                ))
+
+            return new{
+                typeof(sampling),
+                Nothing,
+            }(
+                k,
+                Int(trajectories),
+                sampling,
+                nothing,
+            )
+        end
+
+        if cluster_size !== nothing
+            Int(cluster_size) == clustering.cluster_size ||
+                throw(ArgumentError(
+                    "cluster_size=$(Int(cluster_size)) does not match " *
+                    "explicit clustering size $(clustering.cluster_size)",
+                ))
+        end
+
+        return new{
+            typeof(sampling),
+            typeof(clustering),
+        }(
+            clustering.cluster_size,
             Int(trajectories),
             sampling,
+            clustering,
         )
     end
 end

@@ -3,3 +3,7 @@
 *.jl.mem
 /Manifest*.toml
 docs/build/
+
+# Example outputs written to the repo root
+/rydberg_ising_2d_pilot.csv
+/rydberg_ising_2d_pilot.png

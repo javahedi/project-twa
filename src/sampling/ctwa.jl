@@ -113,12 +113,35 @@ function compile_ctwa_sampling(
         )
 
     for cluster in 1:nclusters
-        first_site =
-            first(
-                cluster_sites(
-                    clustering,
-                    cluster,
-                ),
+        # first_site =
+        #     first(
+        #         cluster_sites(
+        #             clustering,
+        #             cluster,
+        #         ),
+        #     )
+
+        # axes =
+        #     Vector{Int}(
+        #         undef,
+        #         clustering.cluster_size,
+        #     )
+
+        # signs =
+        #     Vector{Int}(
+        #         undef,
+        #         clustering.cluster_size,
+        #     )
+
+        # for position in 1:clustering.cluster_size
+        #     site =
+        #         first_site +
+        #         position -
+        #         1
+        sites =
+            cluster_sites(
+                clustering,
+                cluster,
             )
 
         axes =
@@ -133,11 +156,7 @@ function compile_ctwa_sampling(
                 clustering.cluster_size,
             )
 
-        for position in 1:clustering.cluster_size
-            site =
-                first_site +
-                position -
-                1
+        for ( position, site ) in enumerate(sites)
 
             direction =
                 state_direction(

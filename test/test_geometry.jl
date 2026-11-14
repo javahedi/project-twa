@@ -99,3 +99,119 @@ end
         @test_throws BoundsError distance(chain, 1, 7)
     end
 end
+
+
+
+@testset "Geometry site-count interface" begin
+    @test nsites(Chain(1)) == 1
+    @test nsites(Chain(10)) == 10
+    @test nsites(Chain(10, PeriodicBoundary())) == 10
+end
+
+
+@testset "Square lattice geometry" begin
+    lattice = SquareLattice(4, 3)
+
+    @test nsites(lattice) == 12
+    @test lattice.Lx == 4
+    @test lattice.Ly == 3
+
+    @test coordinates(lattice, 1) == (1, 1)
+    @test coordinates(lattice, 4) == (4, 1)
+    @test coordinates(lattice, 5) == (1, 2)
+    @test coordinates(lattice, 8) == (4, 2)
+    @test coordinates(lattice, 12) == (4, 3)
+
+    periodic = SquareLattice(
+        4,
+        3,
+        PeriodicBoundary(),
+    )
+
+    @test nsites(periodic) == 12
+    @test coordinates(periodic, 12) == (4, 3)
+
+    @test_throws BoundsError coordinates(lattice, 0)
+    @test_throws BoundsError coordinates(lattice, 13)
+end
+
+
+
+@testset "Square lattice bonds" begin
+    open = SquareLattice(3, 2)
+
+    @test Set(bonds(open)) == Set([
+        (1, 2),
+        (2, 3),
+        (4, 5),
+        (5, 6),
+        (1, 4),
+        (2, 5),
+        (3, 6),
+    ])
+
+    @test length(bonds(open)) == 7
+
+    periodic = SquareLattice(
+        3,
+        2,
+        PeriodicBoundary(),
+    )
+
+    @test length(bonds(periodic)) == 9
+
+    @test Set(bonds(periodic)) == Set([
+        (1, 2),
+        (2, 3),
+        (3, 1),
+        (4, 5),
+        (5, 6),
+        (6, 4),
+        (1, 4),
+        (2, 5),
+        (3, 6),
+
+    ])
+end
+
+
+@testset "Small periodic square lattices" begin
+    lattice = SquareLattice(
+        2,
+        2,
+        PeriodicBoundary(),
+    )
+
+    @test length(bonds(lattice)) == 4
+
+    @test Set(bonds(lattice)) == Set([
+        (1, 2),
+        (3, 4),
+        (1, 3),
+        (2, 4),
+    ])
+end
+
+
+@testset "Square lattice distances" begin
+    lattice = SquareLattice(4, 3)
+
+    @test distance(lattice, 1, 1) == 0
+    @test distance(lattice, 1, 2) == 1
+    @test distance(lattice, 1, 5) == 1
+    @test distance(lattice, 1, 6) == sqrt(2)
+    @test distance(lattice, 1, 12) == sqrt(13)
+
+    periodic = SquareLattice(
+        4,
+        3,
+        PeriodicBoundary(),
+    )
+
+    @test distance(periodic, 1, 4) == 1
+    @test distance(periodic, 1, 9) == 1
+    @test distance(periodic, 1, 12) == sqrt(2)
+
+    @test_throws BoundsError distance(lattice, 0, 1)
+    @test_throws BoundsError distance(lattice, 1, 13)
+end

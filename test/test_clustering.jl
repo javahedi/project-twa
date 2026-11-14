@@ -358,3 +358,179 @@
         )
     end
 end
+
+
+
+
+@testset "Arbitrary cluster membership" begin
+    # Four-by-four row-major lattice:
+    #
+    #  1  2   3  4
+    #  5  6   7  8
+    #
+    #  9 10  11 12
+    # 13 14  15 16
+    #
+    # Partition into spatial 2×2 blocks.
+
+    sites = [
+        1   3   9  11
+        2   4  10  12
+        5   7  13  15
+        6   8  14  16
+    ]
+
+    clustering =
+        Clustering(
+            16,
+            sites,
+        )
+
+    @test clustering.nsites == 16
+    @test clustering.cluster_size == 4
+    @test cluster_count(clustering) == 4
+
+    @test collect(cluster_sites(clustering, 1)) ==
+          [1, 2, 5, 6]
+
+    @test collect(cluster_sites(clustering, 2)) ==
+          [3, 4, 7, 8]
+
+    @test site_cluster_position(clustering, 1) == (1, 1)
+    @test site_cluster_position(clustering, 2) == (1, 2)
+    @test site_cluster_position(clustering, 5) == (1, 3)
+    @test site_cluster_position(clustering, 6) == (1, 4)
+
+    @test site_cluster_position(clustering, 11) == (4, 1)
+    @test site_cluster_position(clustering, 16) == (4, 4)
+
+    @test same_cluster(clustering, 1, 6)
+    @test !same_cluster(clustering, 1, 3)
+end
+
+
+
+@testset "Clustering partition validation" begin
+    @test_throws ArgumentError Clustering(
+        4,
+        [
+            1  3
+            2  3
+        ],
+    )
+
+    @test_throws ArgumentError Clustering(
+        4,
+        [
+            1  3
+            2  5
+        ],
+    )
+end
+
+
+
+@testset "Square-lattice block clustering" begin
+    lattice =
+        SquareLattice(
+            4,
+            4,
+        )
+
+    clustering =
+        Clustering(
+            lattice,
+            (2, 2),
+        )
+
+    @test clustering.nsites == 16
+    @test clustering.cluster_size == 4
+    @test length(clustering) == 4
+
+    @test collect(cluster_sites(clustering, 1)) ==
+          [1, 2, 5, 6]
+
+    @test collect(cluster_sites(clustering, 2)) ==
+          [3, 4, 7, 8]
+
+    @test collect(cluster_sites(clustering, 3)) ==
+          [9, 10, 13, 14]
+
+    @test collect(cluster_sites(clustering, 4)) ==
+          [11, 12, 15, 16]
+
+    @test site_cluster_position(
+        clustering,
+        5,
+    ) == (1, 3)
+
+    @test site_cluster_position(
+        clustering,
+        12,
+    ) == (4, 2)
+
+    @test same_cluster(
+        clustering,
+        1,
+        6,
+    )
+
+    @test !same_cluster(
+        clustering,
+        2,
+        3,
+    )
+end
+
+
+
+@testset "Square-lattice block validation" begin
+    lattice =
+        SquareLattice(
+            5,
+            4,
+        )
+
+    @test_throws ArgumentError Clustering(
+        lattice,
+        (2, 2),
+    )
+
+    @test_throws ArgumentError Clustering(
+        lattice,
+        (1, 3),
+    )
+
+    @test_throws ArgumentError Clustering(
+        lattice,
+        (0, 2),
+    )
+end
+
+
+@testset "Square-lattice benchmark cluster shapes" begin
+    lattice = SquareLattice(8, 6)
+
+    c2 = Clustering(lattice, (2, 1))
+    @test c2.cluster_size == 2
+    @test length(c2) == 24
+    @test collect(cluster_sites(c2, 1)) == [1, 2]
+    @test collect(cluster_sites(c2, 4)) == [7, 8]
+
+    c4 = Clustering(lattice, (2, 2))
+    @test c4.cluster_size == 4
+    @test length(c4) == 12
+    @test collect(cluster_sites(c4, 1)) == [1, 2, 9, 10]
+
+    c6 = Clustering(lattice, (2, 3))
+    @test c6.cluster_size == 6
+    @test length(c6) == 8
+    @test collect(cluster_sites(c6, 1)) ==
+          [1, 2, 9, 10, 17, 18]
+
+    c8 = Clustering(lattice, (4, 2))
+    @test c8.cluster_size == 8
+    @test length(c8) == 6
+    @test collect(cluster_sites(c8, 1)) ==
+          [1, 2, 3, 4, 9, 10, 11, 12]
+end

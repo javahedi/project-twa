@@ -47,22 +47,24 @@ function sample_initial(
     rng=nothing,
     T::Type{<:AbstractFloat}=Float64,
 )
-    nsites = model.geometry.nsites
-    ntrajectories = method.trajectories
+   
+
+    N = nsites(model.geometry)
+    ntraj = method.trajectories
 
     samples = Array{T,3}(
         undef,
-        nsites,
+        N,
         3,
-        ntrajectories,
+        ntraj,
     )
 
-    @inbounds for trajectory in 1:ntrajectories
-        for site in 1:nsites
+    @inbounds for trajectory in 1:ntraj
+        for site in 1:N
             direction = state_direction(
                 state,
                 site,
-                nsites,
+                N,
             )
 
             for component in 1:3
