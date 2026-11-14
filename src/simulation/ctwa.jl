@@ -44,7 +44,8 @@ The compiled CTWA Hamiltonian, sparse commutator algebra, and sampling plan are
 constructed once and reused by all trajectories.
 
 Use `dissipation=LocalDissipation(...)` for open-system dynamics. Nonzero
-rates select Itô Euler–Maruyama with maximum step `dt` (default `1e-3`),
+rates use RK4 for Hamiltonian evolution and an Itô Euler–Maruyama
+dissipative update with maximum step `dt` (default `1e-3`),
 shortened to land on each saved time. The supplied RNG controls both
 sampling and noise. Solver overrides and additional solver keywords apply
 to coherent dynamics only.

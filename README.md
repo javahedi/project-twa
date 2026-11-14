@@ -286,7 +286,8 @@ result = simulate(
 ```
 
 Use `DTWA(trajectories=1000)` for single-spin phase-space dynamics. With
-nonzero rates, the solver uses Itô Euler–Maruyama with a maximum step
+nonzero rates, the solver combines RK4 for Hamiltonian evolution with an Itô
+Euler–Maruyama dissipative update, using a maximum step
 `dt` and shortens steps to land on the saved times. The `rng` keyword
 controls both state sampling and stochastic evolution. Decay and
 dephasing use independent noise at every site. The dephasing rate is

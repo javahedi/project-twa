@@ -61,4 +61,13 @@ using Random
     z1 = -1 + exp(-0.2) * (1 + cos(0.6))
     @test only(expectation(interacting, LocalMagnetization(:z, 1))) ≈ z1 atol=0.06
 
+
+    # Pure precession would accumulate a large spin-length error under Euler.
+    precession = simulate(
+        SpinModel(Chain(1), Field(:z, 2.0)), Polarized(:x), dtwa;
+        tspan=(0.0, 100.0), saveat=[100.0], dt=0.05, rng=Xoshiro(6),
+        dissipation=LocalDissipation(decay=1e-12),
+    )
+    @test all(abs.(sum(abs2, precession.trajectories; dims=2) .- 3) .< 0.02)
+
 end
