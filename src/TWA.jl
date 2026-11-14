@@ -37,7 +37,7 @@ export CompiledDTWA
 export compile
 
 export AbstractSimulationResult, DTWAResult
-export simulate
+export simulate, LocalDissipation
 export times, ntrajectories, trajectory
 
 
@@ -122,7 +122,6 @@ include("dynamics/dtwa.jl")
 include("dynamics/dtwa_compiled.jl")
 
 include("simulation/results.jl")
-include("simulation/dtwa.jl")
 
 
 
@@ -140,6 +139,9 @@ include("sampling/ctwa_discrete.jl")
 include("dynamics/ctwa.jl")
 
 include("compilation/ctwa.jl")
+include("dynamics/dissipation.jl")
+include("simulation/open.jl")
+include("simulation/dtwa.jl")
 include("simulation/ctwa.jl")
 
 include("observables/observables.jl")

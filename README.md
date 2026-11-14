@@ -268,3 +268,45 @@ release is available.
 ## License
 
 See [`LICENSE`](LICENSE) for licensing information.
+
+## Open-system DTWA and CTWA
+
+Pass local decay and dephasing rates to the existing simulation interface:
+
+```julia
+result = simulate(
+    model,
+    state,
+    CTWA(cluster_size=2, trajectories=1000);
+    dissipation=LocalDissipation(decay=0.1, dephasing=0.0),
+    tspan=(0.0, 4.0),
+    saveat=0.05,
+    dt=1e-3,
+)
+```
+
+Use `DTWA(trajectories=1000)` for single-spin phase-space dynamics. With
+nonzero rates, the solver uses Itô Euler–Maruyama with a maximum step
+`dt` and shortens steps to land on the saved times. The `rng` keyword
+controls both state sampling and stochastic evolution. Decay and
+dephasing use independent noise at every site. The dephasing rate is
+the decay rate of the transverse coherence under pure dephasing.
+
+### Legacy disordered Néel-chain comparison
+
+```bash
+julia --project examples/open_twa_legacy_neel.jl 2.0 0.0 decay 2
+```
+
+This adapts the legacy six-spin example with 200 disorder realizations
+and 100 trajectories per realization. It uses the legacy random position
+seeds, position-parity Néel state, strongest-bond clusters, Pauli
+couplings, and logarithmic time grid. It writes staggered magnetization
+and disorder standard errors for both methods to
+`open_twa_legacy_neel.csv`. Compare its `open_ctwa_mstz` column with
+`mstz_sum / done_disorders` from the legacy JLD2 file. The noise streams
+and save-time stepping can differ, so compare the ensemble averages.
+
+Append `2 10 smoke.csv` for a quick run with two disorder realizations
+and ten trajectories. Append `500 100 comparison.csv N12` for the
+12-spin HPC preset.

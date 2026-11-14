@@ -34,4 +34,5 @@ using TWA
     include("test_ctwa_collective_observables.jl")
     include("test_ctwa_spatial_observables.jl")
     include("test_ctwa_discrete_sampling.jl")
+    include("test_open_simulation.jl")
 end
