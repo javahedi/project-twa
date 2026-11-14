@@ -25,7 +25,7 @@ function _open_trajectory!(output, u, rhs!, compiled, rates, t0, times, dt, rng)
             new_time > t || throw(ArgumentError("dt is too small to advance time"))
             h = new_time - t
             _coherent_step!(next, stage, derivative, u, rhs!, compiled, t, h)
-            _dissipative_step!(next, u, compiled, rates, h, rng)
+            _dissipative_step!(next, compiled, rates, h, rng)
             u, next = next, u
             t = new_time
         end

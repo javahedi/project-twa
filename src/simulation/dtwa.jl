@@ -36,8 +36,8 @@ This first simulation backend performs four steps:
     )
 
 Use `dissipation=LocalDissipation(...)` for open-system dynamics. Nonzero
-rates use RK4 for Hamiltonian evolution and an Itô Euler–Maruyama
-dissipative update with maximum step `dt` (default `1e-3`),
+rates alternate RK4 Hamiltonian evolution with exact local Itô
+dissipative updates with maximum step `dt` (default `1e-3`),
 shortened to land on each saved time. The supplied RNG controls both
 sampling and noise. Solver overrides and additional solver keywords apply
 to coherent dynamics only.
