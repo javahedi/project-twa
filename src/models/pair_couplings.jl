@@ -268,7 +268,7 @@ end
 
 
 @inline function _coupling_components(
-    geometry::Chain,
+    geometry::AbstractGeometry,
     profile::PowerLaw{<:XXZ},
     i::Integer,
     j::Integer,
@@ -301,7 +301,7 @@ end
 
 
 @inline function _coupling_components(
-    geometry::Chain,
+    geometry::AbstractGeometry,
     profile::PowerLaw{<:Ising},
     i::Integer,
     j::Integer,
