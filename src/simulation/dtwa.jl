@@ -4,7 +4,7 @@ using OrdinaryDiffEq
 """
     simulate(model, state, method::DTWA; kwargs...)
 
-Run a closed-system discrete truncated-Wigner simulation.
+Run a discrete truncated-Wigner ensemble simulation.
 
 This first simulation backend performs four steps:
 
@@ -35,9 +35,12 @@ This first simulation backend performs four steps:
         tspan=(0.0, 12.0),
     )
 
-This method currently supports deterministic closed-system DTWA only.
-Environment/open-system dynamics will be added through a separate
-environment layer rather than through a separate approximation type.
+Use `dissipation=LocalDissipation(...)` for open-system dynamics. Nonzero
+rates alternate RK4 Hamiltonian evolution with exact local Itô
+dissipative updates with maximum step `dt` (default `1e-3`),
+shortened to land on each saved time. The supplied RNG controls both
+sampling and noise. Solver overrides and additional solver keywords apply
+to coherent dynamics only.
 """
 function simulate(
     model::SpinModel,
@@ -47,9 +50,17 @@ function simulate(
     saveat=nothing,
     rng=nothing,
     T::Type{<:AbstractFloat}=Float64,
-    solver=Tsit5(),
+    solver=nothing,
+    dissipation::LocalDissipation=LocalDissipation(),
+    dt=nothing,
     kwargs...,
 )
+    _validate_open_options(dissipation, solver, kwargs)
+    open_system = !iszero(dissipation)
+    algorithm = isnothing(solver) ? Tsit5() : solver
+    solver_options = isnothing(dt) ? kwargs : (; kwargs..., dt)
+    open_dt = isnothing(dt) ? 1e-3 : dt
+
     t0, tf = _validate_tspan(tspan)
 
     output_times = _simulation_saveat(
@@ -63,6 +74,10 @@ function simulate(
         model,
         method,
     )
+
+    noise_rng = open_system ? Random.Xoshiro(rand(
+        isnothing(rng) ? Random.default_rng() : rng, UInt64,
+    )) : nothing
 
     initial_ensemble = sample_initial(
         model,
@@ -89,6 +104,14 @@ function simulate(
             @view initial_ensemble[:, :, k]
         )
 
+        if open_system
+            _open_trajectory!(
+                view(values, :, :, :, k), u0, dtwa_rhs!,
+                compiled, dissipation, T(t0), output_times, open_dt, noise_rng,
+            )
+            continue
+        end
+
         problem = ODEProblem(
             dtwa_rhs!,
             u0,
@@ -98,9 +121,9 @@ function simulate(
 
         solution = solve(
             problem,
-            solver;
+            algorithm;
             saveat=output_times,
-            kwargs...,
+            solver_options...,
         )
 
         length(solution.u) == ntimes ||

@@ -1,7 +1,7 @@
 """
     CTWAResult
 
-Closed-system CTWA simulation result.
+CTWA simulation result.
 
 `trajectories` has layout
 
@@ -29,7 +29,7 @@ end
 """
     simulate(model, state, method::CTWA; kwargs...)
 
-Run a closed-system CTWA ensemble simulation.
+Run a CTWA ensemble simulation.
 
 Keyword arguments:
 
@@ -42,6 +42,13 @@ Keyword arguments:
 
 The compiled CTWA Hamiltonian, sparse commutator algebra, and sampling plan are
 constructed once and reused by all trajectories.
+
+Use `dissipation=LocalDissipation(...)` for open-system dynamics. Nonzero
+rates alternate RK4 Hamiltonian evolution with exact local Itô
+dissipative updates with maximum step `dt` (default `1e-3`),
+shortened to land on each saved time. The supplied RNG controls both
+sampling and noise. Solver overrides and additional solver keywords apply
+to coherent dynamics only.
 """
 function simulate(
     model::SpinModel,
@@ -51,9 +58,17 @@ function simulate(
     saveat=nothing,
     rng=nothing,
     T::Type{<:AbstractFloat}=Float64,
-    solver=Tsit5(),
+    solver=nothing,
+    dissipation::LocalDissipation=LocalDissipation(),
+    dt=nothing,
     kwargs...,
 )
+    _validate_open_options(dissipation, solver, kwargs)
+    open_system = !iszero(dissipation)
+    algorithm = isnothing(solver) ? Tsit5() : solver
+    solver_options = isnothing(dt) ? kwargs : (; kwargs..., dt)
+    open_dt = isnothing(dt) ? 1e-3 : dt
+
     t0, tf =
         _ctwa_validate_tspan(
             tspan,
@@ -107,6 +122,8 @@ function simulate(
         Random.default_rng() :
         rng
 
+    noise_rng = open_system ? Random.Xoshiro(rand(random, UInt64)) : nothing
+
     x0 =
         Matrix{T}(
             undef,
@@ -120,6 +137,14 @@ function simulate(
             compiled;
             rng=random,
         )
+
+        if open_system
+            _open_trajectory!(
+                view(trajectories, :, :, :, trajectory), copy(x0), ctwa_rhs!,
+                compiled, dissipation, T(t0), saved_times, open_dt, noise_rng,
+            )
+            continue
+        end
 
         problem =
             ODEProblem(
@@ -135,9 +160,9 @@ function simulate(
         solution =
             solve(
                 problem,
-                solver;
+                algorithm;
                 saveat=saved_times,
-                kwargs...,
+                solver_options...,
             )
 
         length(solution.u) == nsave ||
